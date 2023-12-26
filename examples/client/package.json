@@ -1,0 +1,25 @@
+{
+  "name": "clinet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "emi": "emi",
+    "build": "npx esbuild ./src/** --bundle --outdir=dist",
+    "dev": "pnpm build --watch",
+    "serve": "npx serve -p 1111 ./dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "emi": "workspace:*",
+    "serve": "^14.2.1"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "emi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": "./bin/emi.js",
+  "scripts": {
+    "build": "npx esbuild ./src/** --platform=node --bundle --outdir=lib",
+    "dev": "pnpm build --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^11.1.0"
+  }
+}
