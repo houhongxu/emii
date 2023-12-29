@@ -1,12 +1,9 @@
 {
-  "name": "clinet",
-  "version": "1.0.0",
+  "name": "client",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "emi": "emi",
     "build": "npx esbuild ./src/** --bundle --outdir=dist",
-    "dev": "pnpm build --watch",
+    "dev": "emi dev",
     "serve": "npx serve -p 1111 ./dist"
   },
   "keywords": [],

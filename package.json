@@ -1,11 +1,7 @@
 {
-  "name": "emi-project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "pnpm --recursive --filter ./packages/** build",
-    "dev": "pnpm --recursive --parallel --filter ./packages/** dev"
+    "build": "pnpm --recursive --filter=./packages/** build",
+    "dev": "pnpm --recursive --parallel --filter=./packages/** dev"
   },
   "keywords": [],
   "author": "",
