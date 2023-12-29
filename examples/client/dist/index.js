@@ -23516,6 +23516,7 @@
     return /* @__PURE__ */ import_react.default.createElement(
       "span",
       {
+        className: "red",
         onClick: () => {
           setText("Hi!");
         }

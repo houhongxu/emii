@@ -21,8 +21,9 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var constants_exports = {};
 __export(constants_exports, {
   DEFAULT_BUILD_PORT: () => DEFAULT_BUILD_PORT,
-  DEFAULT_ENTRY_POINT: () => DEFAULT_ENTRY_POINT,
+  DEFAULT_CSS_ENTRY_POINT: () => DEFAULT_CSS_ENTRY_POINT,
   DEFAULT_HOST: () => DEFAULT_HOST,
+  DEFAULT_JS_ENTRY_POINT: () => DEFAULT_JS_ENTRY_POINT,
   DEFAULT_OUTDIR: () => DEFAULT_OUTDIR,
   DEFAULT_PORT: () => DEFAULT_PORT
 });
@@ -30,15 +31,17 @@ module.exports = __toCommonJS(constants_exports);
 
 // src/constants/html.ts
 var DEFAULT_OUTDIR = "dist";
-var DEFAULT_ENTRY_POINT = "src/index.tsx";
+var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
+var DEFAULT_CSS_ENTRY_POINT = "./src/index.css";
 var DEFAULT_HOST = "127.0.0.1";
 var DEFAULT_PORT = 2222;
 var DEFAULT_BUILD_PORT = 3333;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   DEFAULT_BUILD_PORT,
-  DEFAULT_ENTRY_POINT,
+  DEFAULT_CSS_ENTRY_POINT,
   DEFAULT_HOST,
+  DEFAULT_JS_ENTRY_POINT,
   DEFAULT_OUTDIR,
   DEFAULT_PORT
 });

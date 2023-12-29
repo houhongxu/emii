@@ -15134,7 +15134,7 @@ var require_cookies = __commonJS({
     "use strict";
     var deprecate2 = require_depd2()("cookies");
     var Keygrip = require_keygrip();
-    var http = require("http");
+    var http2 = require("http");
     var cache = {};
     var fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
     var SAME_SITE_REGEXP = /^(?:lax|none|strict)$/i;
@@ -15202,7 +15202,7 @@ var require_cookies = __commonJS({
         cookie.name += ".sig";
         pushCookie(headers, cookie);
       }
-      var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader;
+      var setHeader = res.set ? http2.OutgoingMessage.prototype.setHeader : res.setHeader;
       setHeader.call(res, "Set-Cookie", headers);
       return this;
     };
@@ -17103,7 +17103,7 @@ var require_application = __commonJS({
     var Emitter = require("events");
     var util = require("util");
     var Stream = require("stream");
-    var http = require("http");
+    var http2 = require("http");
     var only = require_only();
     var convert = require_koa_convert();
     var deprecate2 = require_depd2()("koa");
@@ -17159,7 +17159,7 @@ var require_application = __commonJS({
        */
       listen(...args2) {
         debug("listen");
-        const server = http.createServer(this.callback());
+        const server = http2.createServer(this.callback());
         return server.listen(...args2);
       }
       /**
@@ -17293,9 +17293,9 @@ ${msg.replace(/^/gm, "  ")}
         return Application;
       }
       createAsyncCtxStorageMiddleware() {
-        const app2 = this;
+        const app = this;
         return async function asyncCtxStorage(ctx, next) {
-          await app2.ctxStorage.run(ctx, async () => {
+          await app.ctxStorage.run(ctx, async () => {
             return await next();
           });
         };
@@ -19988,6 +19988,477 @@ var require_portfinder = __commonJS({
   }
 });
 
+// ../../node_modules/.pnpm/setprototypeof@1.1.0/node_modules/setprototypeof/index.js
+var require_setprototypeof2 = __commonJS({
+  "../../node_modules/.pnpm/setprototypeof@1.1.0/node_modules/setprototypeof/index.js"(exports2, module2) {
+    module2.exports = Object.setPrototypeOf || ({ __proto__: [] } instanceof Array ? setProtoOf : mixinProperties);
+    function setProtoOf(obj, proto) {
+      obj.__proto__ = proto;
+      return obj;
+    }
+    function mixinProperties(obj, proto) {
+      for (var prop in proto) {
+        if (!obj.hasOwnProperty(prop)) {
+          obj[prop] = proto[prop];
+        }
+      }
+      return obj;
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/inherits@2.0.3/node_modules/inherits/inherits_browser.js
+var require_inherits_browser2 = __commonJS({
+  "../../node_modules/.pnpm/inherits@2.0.3/node_modules/inherits/inherits_browser.js"(exports2, module2) {
+    if (typeof Object.create === "function") {
+      module2.exports = function inherits(ctor, superCtor) {
+        ctor.super_ = superCtor;
+        ctor.prototype = Object.create(superCtor.prototype, {
+          constructor: {
+            value: ctor,
+            enumerable: false,
+            writable: true,
+            configurable: true
+          }
+        });
+      };
+    } else {
+      module2.exports = function inherits(ctor, superCtor) {
+        ctor.super_ = superCtor;
+        var TempCtor = function() {
+        };
+        TempCtor.prototype = superCtor.prototype;
+        ctor.prototype = new TempCtor();
+        ctor.prototype.constructor = ctor;
+      };
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/inherits@2.0.3/node_modules/inherits/inherits.js
+var require_inherits2 = __commonJS({
+  "../../node_modules/.pnpm/inherits@2.0.3/node_modules/inherits/inherits.js"(exports2, module2) {
+    try {
+      util = require("util");
+      if (typeof util.inherits !== "function")
+        throw "";
+      module2.exports = util.inherits;
+    } catch (e) {
+      module2.exports = require_inherits_browser2();
+    }
+    var util;
+  }
+});
+
+// ../../node_modules/.pnpm/http-errors@1.6.3/node_modules/http-errors/index.js
+var require_http_errors2 = __commonJS({
+  "../../node_modules/.pnpm/http-errors@1.6.3/node_modules/http-errors/index.js"(exports2, module2) {
+    "use strict";
+    var deprecate2 = require_depd()("http-errors");
+    var setPrototypeOf = require_setprototypeof2();
+    var statuses = require_statuses();
+    var inherits = require_inherits2();
+    module2.exports = createError;
+    module2.exports.HttpError = createHttpErrorConstructor();
+    populateConstructorExports(module2.exports, statuses.codes, module2.exports.HttpError);
+    function codeClass(status) {
+      return Number(String(status).charAt(0) + "00");
+    }
+    function createError() {
+      var err;
+      var msg;
+      var status = 500;
+      var props = {};
+      for (var i = 0; i < arguments.length; i++) {
+        var arg = arguments[i];
+        if (arg instanceof Error) {
+          err = arg;
+          status = err.status || err.statusCode || status;
+          continue;
+        }
+        switch (typeof arg) {
+          case "string":
+            msg = arg;
+            break;
+          case "number":
+            status = arg;
+            if (i !== 0) {
+              deprecate2("non-first-argument status code; replace with createError(" + arg + ", ...)");
+            }
+            break;
+          case "object":
+            props = arg;
+            break;
+        }
+      }
+      if (typeof status === "number" && (status < 400 || status >= 600)) {
+        deprecate2("non-error status code; use only 4xx or 5xx status codes");
+      }
+      if (typeof status !== "number" || !statuses[status] && (status < 400 || status >= 600)) {
+        status = 500;
+      }
+      var HttpError2 = createError[status] || createError[codeClass(status)];
+      if (!err) {
+        err = HttpError2 ? new HttpError2(msg) : new Error(msg || statuses[status]);
+        Error.captureStackTrace(err, createError);
+      }
+      if (!HttpError2 || !(err instanceof HttpError2) || err.status !== status) {
+        err.expose = status < 500;
+        err.status = err.statusCode = status;
+      }
+      for (var key in props) {
+        if (key !== "status" && key !== "statusCode") {
+          err[key] = props[key];
+        }
+      }
+      return err;
+    }
+    function createHttpErrorConstructor() {
+      function HttpError2() {
+        throw new TypeError("cannot construct abstract class");
+      }
+      inherits(HttpError2, Error);
+      return HttpError2;
+    }
+    function createClientErrorConstructor(HttpError2, name, code) {
+      var className = name.match(/Error$/) ? name : name + "Error";
+      function ClientError(message2) {
+        var msg = message2 != null ? message2 : statuses[code];
+        var err = new Error(msg);
+        Error.captureStackTrace(err, ClientError);
+        setPrototypeOf(err, ClientError.prototype);
+        Object.defineProperty(err, "message", {
+          enumerable: true,
+          configurable: true,
+          value: msg,
+          writable: true
+        });
+        Object.defineProperty(err, "name", {
+          enumerable: false,
+          configurable: true,
+          value: className,
+          writable: true
+        });
+        return err;
+      }
+      inherits(ClientError, HttpError2);
+      ClientError.prototype.status = code;
+      ClientError.prototype.statusCode = code;
+      ClientError.prototype.expose = true;
+      return ClientError;
+    }
+    function createServerErrorConstructor(HttpError2, name, code) {
+      var className = name.match(/Error$/) ? name : name + "Error";
+      function ServerError(message2) {
+        var msg = message2 != null ? message2 : statuses[code];
+        var err = new Error(msg);
+        Error.captureStackTrace(err, ServerError);
+        setPrototypeOf(err, ServerError.prototype);
+        Object.defineProperty(err, "message", {
+          enumerable: true,
+          configurable: true,
+          value: msg,
+          writable: true
+        });
+        Object.defineProperty(err, "name", {
+          enumerable: false,
+          configurable: true,
+          value: className,
+          writable: true
+        });
+        return err;
+      }
+      inherits(ServerError, HttpError2);
+      ServerError.prototype.status = code;
+      ServerError.prototype.statusCode = code;
+      ServerError.prototype.expose = false;
+      return ServerError;
+    }
+    function populateConstructorExports(exports3, codes, HttpError2) {
+      codes.forEach(function forEachCode(code) {
+        var CodeError;
+        var name = toIdentifier(statuses[code]);
+        switch (codeClass(code)) {
+          case 400:
+            CodeError = createClientErrorConstructor(HttpError2, name, code);
+            break;
+          case 500:
+            CodeError = createServerErrorConstructor(HttpError2, name, code);
+            break;
+        }
+        if (CodeError) {
+          exports3[code] = CodeError;
+          exports3[name] = CodeError;
+        }
+      });
+      exports3["I'mateapot"] = deprecate2.function(
+        exports3.ImATeapot,
+        `"I'mateapot"; use "ImATeapot" instead`
+      );
+    }
+    function toIdentifier(str) {
+      return str.split(" ").map(function(token) {
+        return token.slice(0, 1).toUpperCase() + token.slice(1);
+      }).join("").replace(/[^ _0-9a-z]/gi, "");
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/path-is-absolute@1.0.1/node_modules/path-is-absolute/index.js
+var require_path_is_absolute = __commonJS({
+  "../../node_modules/.pnpm/path-is-absolute@1.0.1/node_modules/path-is-absolute/index.js"(exports2, module2) {
+    "use strict";
+    function posix(path2) {
+      return path2.charAt(0) === "/";
+    }
+    function win32(path2) {
+      var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+      var result = splitDeviceRe.exec(path2);
+      var device = result[1] || "";
+      var isUnc = Boolean(device && device.charAt(1) !== ":");
+      return Boolean(result[2] || isUnc);
+    }
+    module2.exports = process.platform === "win32" ? win32 : posix;
+    module2.exports.posix = posix;
+    module2.exports.win32 = win32;
+  }
+});
+
+// ../../node_modules/.pnpm/resolve-path@1.4.0/node_modules/resolve-path/index.js
+var require_resolve_path = __commonJS({
+  "../../node_modules/.pnpm/resolve-path@1.4.0/node_modules/resolve-path/index.js"(exports2, module2) {
+    "use strict";
+    var createError = require_http_errors2();
+    var join = require("path").join;
+    var normalize = require("path").normalize;
+    var pathIsAbsolute = require_path_is_absolute();
+    var resolve = require("path").resolve;
+    var sep = require("path").sep;
+    module2.exports = resolvePath;
+    var UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
+    function resolvePath(rootPath, relativePath) {
+      var path2 = relativePath;
+      var root = rootPath;
+      if (arguments.length === 1) {
+        path2 = rootPath;
+        root = process.cwd();
+      }
+      if (root == null) {
+        throw new TypeError("argument rootPath is required");
+      }
+      if (typeof root !== "string") {
+        throw new TypeError("argument rootPath must be a string");
+      }
+      if (path2 == null) {
+        throw new TypeError("argument relativePath is required");
+      }
+      if (typeof path2 !== "string") {
+        throw new TypeError("argument relativePath must be a string");
+      }
+      if (path2.indexOf("\0") !== -1) {
+        throw createError(400, "Malicious Path");
+      }
+      if (pathIsAbsolute.posix(path2) || pathIsAbsolute.win32(path2)) {
+        throw createError(400, "Malicious Path");
+      }
+      if (UP_PATH_REGEXP.test(normalize("." + sep + path2))) {
+        throw createError(403);
+      }
+      return normalize(join(resolve(root), path2));
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/koa-send@5.0.1/node_modules/koa-send/index.js
+var require_koa_send = __commonJS({
+  "../../node_modules/.pnpm/koa-send@5.0.1/node_modules/koa-send/index.js"(exports2, module2) {
+    var fs = require("fs");
+    var util = require("util");
+    var debug = require_src()("koa-send");
+    var resolvePath = require_resolve_path();
+    var createError = require_http_errors();
+    var assert = require("assert");
+    var stat = util.promisify(fs.stat);
+    var access = util.promisify(fs.access);
+    async function exists(path2) {
+      try {
+        await access(path2);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    var {
+      normalize,
+      basename,
+      extname,
+      resolve,
+      parse,
+      sep
+    } = require("path");
+    module2.exports = send;
+    async function send(ctx, path2, opts = {}) {
+      assert(ctx, "koa context required");
+      assert(path2, "pathname required");
+      debug('send "%s" %j', path2, opts);
+      const root = opts.root ? normalize(resolve(opts.root)) : "";
+      const trailingSlash = path2[path2.length - 1] === "/";
+      path2 = path2.substr(parse(path2).root.length);
+      const index = opts.index;
+      const maxage = opts.maxage || opts.maxAge || 0;
+      const immutable = opts.immutable || false;
+      const hidden = opts.hidden || false;
+      const format = opts.format !== false;
+      const extensions = Array.isArray(opts.extensions) ? opts.extensions : false;
+      const brotli = opts.brotli !== false;
+      const gzip = opts.gzip !== false;
+      const setHeaders = opts.setHeaders;
+      if (setHeaders && typeof setHeaders !== "function") {
+        throw new TypeError("option setHeaders must be function");
+      }
+      path2 = decode(path2);
+      if (path2 === -1)
+        return ctx.throw(400, "failed to decode");
+      if (index && trailingSlash)
+        path2 += index;
+      path2 = resolvePath(root, path2);
+      if (!hidden && isHidden(root, path2))
+        return;
+      let encodingExt = "";
+      if (ctx.acceptsEncodings("br", "identity") === "br" && brotli && await exists(path2 + ".br")) {
+        path2 = path2 + ".br";
+        ctx.set("Content-Encoding", "br");
+        ctx.res.removeHeader("Content-Length");
+        encodingExt = ".br";
+      } else if (ctx.acceptsEncodings("gzip", "identity") === "gzip" && gzip && await exists(path2 + ".gz")) {
+        path2 = path2 + ".gz";
+        ctx.set("Content-Encoding", "gzip");
+        ctx.res.removeHeader("Content-Length");
+        encodingExt = ".gz";
+      }
+      if (extensions && !/\./.exec(basename(path2))) {
+        const list = [].concat(extensions);
+        for (let i = 0; i < list.length; i++) {
+          let ext = list[i];
+          if (typeof ext !== "string") {
+            throw new TypeError("option extensions must be array of strings or false");
+          }
+          if (!/^\./.exec(ext))
+            ext = `.${ext}`;
+          if (await exists(`${path2}${ext}`)) {
+            path2 = `${path2}${ext}`;
+            break;
+          }
+        }
+      }
+      let stats;
+      try {
+        stats = await stat(path2);
+        if (stats.isDirectory()) {
+          if (format && index) {
+            path2 += `/${index}`;
+            stats = await stat(path2);
+          } else {
+            return;
+          }
+        }
+      } catch (err) {
+        const notfound = ["ENOENT", "ENAMETOOLONG", "ENOTDIR"];
+        if (notfound.includes(err.code)) {
+          throw createError(404, err);
+        }
+        err.status = 500;
+        throw err;
+      }
+      if (setHeaders)
+        setHeaders(ctx.res, path2, stats);
+      ctx.set("Content-Length", stats.size);
+      if (!ctx.response.get("Last-Modified"))
+        ctx.set("Last-Modified", stats.mtime.toUTCString());
+      if (!ctx.response.get("Cache-Control")) {
+        const directives = [`max-age=${maxage / 1e3 | 0}`];
+        if (immutable) {
+          directives.push("immutable");
+        }
+        ctx.set("Cache-Control", directives.join(","));
+      }
+      if (!ctx.type)
+        ctx.type = type(path2, encodingExt);
+      ctx.body = fs.createReadStream(path2);
+      return path2;
+    }
+    function isHidden(root, path2) {
+      path2 = path2.substr(root.length).split(sep);
+      for (let i = 0; i < path2.length; i++) {
+        if (path2[i][0] === ".")
+          return true;
+      }
+      return false;
+    }
+    function type(file, ext) {
+      return ext !== "" ? extname(basename(file, ext)) : extname(file);
+    }
+    function decode(path2) {
+      try {
+        return decodeURIComponent(path2);
+      } catch (err) {
+        return -1;
+      }
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/koa-static@5.0.0/node_modules/koa-static/index.js
+var require_koa_static = __commonJS({
+  "../../node_modules/.pnpm/koa-static@5.0.0/node_modules/koa-static/index.js"(exports2, module2) {
+    "use strict";
+    var debug = require_src2()("koa-static");
+    var { resolve } = require("path");
+    var assert = require("assert");
+    var send = require_koa_send();
+    module2.exports = serve;
+    function serve(root, opts) {
+      opts = Object.assign({}, opts);
+      assert(root, "root directory is required to serve files");
+      debug('static "%s" %j', root, opts);
+      opts.root = resolve(root);
+      if (opts.index !== false)
+        opts.index = opts.index || "index.html";
+      if (!opts.defer) {
+        return async function serve2(ctx, next) {
+          let done = false;
+          if (ctx.method === "HEAD" || ctx.method === "GET") {
+            try {
+              done = await send(ctx, ctx.path, opts);
+            } catch (err) {
+              if (err.status !== 404) {
+                throw err;
+              }
+            }
+          }
+          if (!done) {
+            await next();
+          }
+        };
+      }
+      return async function serve2(ctx, next) {
+        await next();
+        if (ctx.method !== "HEAD" && ctx.method !== "GET")
+          return;
+        if (ctx.body != null || ctx.status !== 404)
+          return;
+        try {
+          await send(ctx, ctx.path, opts);
+        } catch (err) {
+          if (err.status !== 404) {
+            throw err;
+          }
+        }
+      };
+    }
+  }
+});
+
 // src/cli/index.ts
 var cli_exports = {};
 __export(cli_exports, {
@@ -20020,7 +20491,8 @@ var package_default = {
   main: "index.js",
   bin: "./bin/emi.js",
   scripts: {
-    build: "npx esbuild ./src/** --platform=node --external:esbuild --bundle --outdir=lib",
+    build: "pnpm build:client && npx esbuild ./src/** --platform=node --external:esbuild --bundle --outdir=lib",
+    "build:client": "npx esbuild ./client/** --external:esbuild --bundle --outdir=lib/client",
     dev: "pnpm build --watch"
   },
   keywords: [],
@@ -20030,10 +20502,14 @@ var package_default = {
     commander: "^11.1.0",
     esbuild: "^0.19.10",
     koa: "^2.14.2",
+    "koa-better-http-proxy": "^0.2.10",
+    "koa-static": "^5.0.0",
     portfinder: "^1.0.32"
   },
   devDependencies: {
-    "@types/koa": "^2.13.12"
+    "@types/koa": "^2.13.12",
+    "@types/koa-static": "~4.0.4",
+    "@types/node": "^20.10.5"
   }
 };
 
@@ -20047,7 +20523,8 @@ var import_esbuild = require("esbuild");
 
 // src/constants/html.ts
 var DEFAULT_OUTDIR = "dist";
-var DEFAULT_ENTRY_POINT = "src/index.tsx";
+var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
+var DEFAULT_CSS_ENTRY_POINT = "./src/index.css";
 var DEFAULT_HOST = "127.0.0.1";
 var DEFAULT_PORT = 2222;
 var DEFAULT_BUILD_PORT = 3333;
@@ -20055,54 +20532,79 @@ var DEFAULT_BUILD_PORT = 3333;
 // src/cli/commands/dev.ts
 var import_path = __toESM(require("path"));
 var import_portfinder = __toESM(require_portfinder());
-var app = new koa_default();
-app.use((ctx) => {
-  ctx.set("Content-Type", "text/html");
-  ctx.body = `<!DOCTYPE html>
-    <html lang="en">
-    
-    <head>
-        <meta charset="UTF-8">
-        <title>Emi</title>
-    </head>
-    
-    <body>
-        <div id="root">
-            <span>loading...</span>
-            <script src="http://${DEFAULT_HOST}:${DEFAULT_BUILD_PORT}/index.js"></script>
-        </div>
-    </body>
-    </html>`;
-});
+var import_koa_static = __toESM(require_koa_static());
+var import_http = __toESM(require("http"));
 var dev = new Command("dev");
 dev.option("-p,--port <value>", "log it", DEFAULT_PORT.toString()).action(async (options) => {
   const port = options.port;
-  const newPort = await findPort(parseInt(port));
+  const koaPort = await findPort(parseInt(port));
+  const buildPort = await findPort(DEFAULT_BUILD_PORT);
   try {
-    await devListen(newPort);
-    const ctx = await devBuild();
-    process.on("SIGINT", () => {
-      ctx.dispose();
-      process.exit(0);
-    });
-    process.on("SIGTERM", () => {
-      ctx.dispose();
-      process.exit(0);
-    });
+    await devKoaServe(koaPort, buildPort);
+    await devBuildServe(buildPort);
   } catch (e) {
     console.log(e);
     process.exit(1);
   }
 });
-async function devListen(port) {
+async function devKoaServe(koaPort, buildPort) {
+  const app = new koa_default();
+  app.use((0, import_koa_static.default)(__dirname));
+  app.use(async (ctx, next) => {
+    if (ctx.url === "/") {
+      ctx.set("Content-Type", "text/html");
+      ctx.body = `
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Emi</title>
+        <link rel="stylesheet" href="http://${DEFAULT_HOST}:${buildPort}/index.css"></link>
+    </head>
+    
+    <body>
+        <div id="root">
+            <span>loading...</span>
+            <script src="http://${DEFAULT_HOST}:${buildPort}/index.js"></script>
+            <script src="/client/hot-reloading.js"></script>
+        </div>
+    </body>
+    </html>
+    `;
+    } else if (ctx.url.includes("favicon")) {
+      ctx.body = "";
+    } else {
+      await next();
+    }
+  });
+  app.use(async (ctx) => {
+    const options = {
+      hostname: DEFAULT_HOST,
+      port: buildPort,
+      path: ctx.req.url,
+      method: ctx.req.method,
+      headers: ctx.req.headers
+    };
+    await new Promise((resolve, reject) => {
+      const proxyReq = import_http.default.request(options, (proxyRes) => {
+        ctx.status = proxyRes.statusCode ?? 200;
+        ctx.set(proxyRes.headers);
+        ctx.body = proxyRes;
+        resolve("success");
+      });
+      proxyReq.on("error", reject);
+      ctx.req.pipe(proxyReq);
+    });
+  });
   return new Promise((resolve) => {
-    app.listen(port, async () => {
-      console.log(`App listening at http://${DEFAULT_HOST}:${port}`);
-      resolve(port);
+    app.listen(koaPort, async () => {
+      console.log(`App listening at http://${DEFAULT_HOST}:${koaPort}`);
+      resolve(koaPort);
     });
   });
 }
-async function devBuild() {
+async function devBuildServe(buildPort) {
   const ctx = await (0, import_esbuild.context)({
     outdir: DEFAULT_OUTDIR,
     bundle: true,
@@ -20113,17 +20615,28 @@ async function devBuild() {
       "process.env.NODE_ENV": JSON.stringify("development")
     },
     // 在命令执行的路径查找入口
-    entryPoints: [import_path.default.resolve(process.cwd(), DEFAULT_ENTRY_POINT)]
+    entryPoints: [
+      import_path.default.join(process.cwd(), DEFAULT_JS_ENTRY_POINT),
+      import_path.default.join(process.cwd(), DEFAULT_CSS_ENTRY_POINT)
+    ]
   });
+  await ctx.watch();
   await ctx.serve({
     servedir: DEFAULT_OUTDIR,
-    port: DEFAULT_BUILD_PORT,
     host: DEFAULT_HOST,
+    port: buildPort,
     onRequest: (args2) => {
       console.log(`${args2.method}: ${args2.path} ${args2.timeInMS} ms`);
     }
   });
-  return ctx;
+  process.on("SIGINT", () => {
+    ctx.dispose();
+    process.exit(0);
+  });
+  process.on("SIGTERM", () => {
+    ctx.dispose();
+    process.exit(0);
+  });
 }
 async function findPort(port) {
   const newPort = await import_portfinder.default.getPortPromise({ port });
@@ -20335,6 +20848,22 @@ fresh/index.js:
    * fresh
    * Copyright(c) 2012 TJ Holowaychuk
    * Copyright(c) 2016-2017 Douglas Christopher Wilson
+   * MIT Licensed
+   *)
+
+http-errors/index.js:
+  (*!
+   * http-errors
+   * Copyright(c) 2014 Jonathan Ong
+   * Copyright(c) 2016 Douglas Christopher Wilson
+   * MIT Licensed
+   *)
+
+resolve-path/index.js:
+  (*!
+   * resolve-path
+   * Copyright(c) 2014 Jonathan Ong
+   * Copyright(c) 2015-2018 Douglas Christopher Wilson
    * MIT Licensed
    *)
 */

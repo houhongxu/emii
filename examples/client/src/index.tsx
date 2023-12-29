@@ -6,6 +6,7 @@ const Hello = () => {
 
   return (
     <span
+      className="red"
       onClick={() => {
         setText('Hi!')
       }}
