@@ -2,7 +2,6 @@
   "name": "client",
   "description": "",
   "scripts": {
-    "build": "npx esbuild ./src/** --bundle --outdir=dist",
     "dev": "emi dev",
     "serve": "npx serve -p 1111 ./dist"
   },
