@@ -1,8 +1,10 @@
-import React from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { useKeepaliveOutlets } from '../../../packages/react-keep-router-alive/lib'
 
 export const Layout = () => {
   const { pathname } = useLocation()
+  const element = useKeepaliveOutlets()
+
   return (
     <div
       style={{
@@ -46,7 +48,7 @@ export const Layout = () => {
           overscrollBehaviorY: 'contain',
         }}
       >
-        <Outlet />
+        {element}
       </div>
     </div>
   )

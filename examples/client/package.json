@@ -17,6 +17,7 @@
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "emi": "workspace:*",
+    "react-router-keep-alive": "workspace:*",
     "serve": "^14.2.1"
   }
 }

@@ -20488,8 +20488,12 @@ var package_default = {
   name: "emi",
   version: "0.0.1",
   description: "",
-  main: "index.js",
+  main: "./lib/cli.js",
   bin: "./bin/emi.js",
+  files: [
+    "./lib",
+    "./bin"
+  ],
   scripts: {
     build: "pnpm build:client && npx esbuild ./src/** --platform=node --external:esbuild --bundle --outdir=lib",
     "build:client": "npx esbuild ./client/** --external:esbuild --bundle --outdir=lib/client",

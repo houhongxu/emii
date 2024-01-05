@@ -1,10 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { HashRouter, Link, Route, Routes } from 'react-router-dom'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import { Layout } from './layout'
+import { createElement, useState } from 'react'
+import {
+  KeepAliveLayout,
+  useKeepaliveOutlets,
+} from '../../../packages/react-keep-router-alive/lib'
 
 const Hello = () => {
-  const [text, setText] = React.useState('Hello Emi!')
+  const [text, setText] = useState('Hello Emi!')
 
   return (
     <>
@@ -32,25 +36,28 @@ const Users = () => {
 const Me = () => {
   return (
     <>
-      <p> Me </p> <Link to="/">go Home</Link>
+      <p> Me </p>
+      <Link to="/">go Home</Link>
     </>
   )
 }
 
 const App = () => {
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/" element={<Hello />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/me" element={<Me />} />
-        </Route>
-      </Routes>
-    </HashRouter>
+    <KeepAliveLayout keepalivePaths={['/']}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Hello />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/me" element={<Me />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </KeepAliveLayout>
   )
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root')!)
+const root = createRoot(document.getElementById('root')!)
 
-root.render(React.createElement(App))
+root.render(createElement(App))
