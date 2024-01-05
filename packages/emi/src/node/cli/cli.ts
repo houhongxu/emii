@@ -1,5 +1,5 @@
 import { program } from 'commander'
-import json from '../../package.json'
+import json from '../../../package.json'
 import { dev } from './commands/dev'
 
 export const cli = program

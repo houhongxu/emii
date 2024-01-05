@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/constants/index.ts
+// src/node/constants/index.ts
 var constants_exports = {};
 __export(constants_exports, {
   DEFAULT_BUILD_PORT: () => DEFAULT_BUILD_PORT,
@@ -29,7 +29,7 @@ __export(constants_exports, {
 });
 module.exports = __toCommonJS(constants_exports);
 
-// src/constants/html.ts
+// src/node/constants/html.ts
 var DEFAULT_OUTDIR = "dist";
 var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
 var DEFAULT_CSS_ENTRY_POINT = "./src/index.css";

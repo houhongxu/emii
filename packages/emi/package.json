@@ -2,15 +2,16 @@
   "name": "emi",
   "version": "0.0.1",
   "description": "",
-  "main": "./lib/cli.js",
+  "main": "./lib/node/cli.js",
   "bin": "./bin/emi.js",
   "files": [
     "./lib",
     "./bin"
   ],
   "scripts": {
-    "build": "pnpm build:client && npx esbuild ./src/** --platform=node --external:esbuild --bundle --outdir=lib",
-    "build:client": "npx esbuild ./client/** --external:esbuild --bundle --outdir=lib/client",
+    "build:node": "npx esbuild ./src/node/** --platform=node --external:esbuild --bundle --outdir=lib/node",
+    "build:client": "npx esbuild ./src/client/** --external:esbuild --bundle --outdir=lib/client",
+    "build": "pnpm build:node && pnpm build:client",
     "dev": "pnpm build --watch"
   },
   "keywords": [],

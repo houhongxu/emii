@@ -30671,9 +30671,9 @@
     }
   });
 
-  // ../../packages/react-keepalive/lib/index.js
+  // ../../packages/react-keep-router-alive/lib/index.js
   var require_lib = __commonJS({
-    "../../packages/react-keepalive/lib/index.js"(exports) {
+    "../../packages/react-keep-router-alive/lib/index.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.KeepAliveContext = exports.useKeepaliveOutlets = exports.KeepAliveLayout = void 0;
@@ -30738,11 +30738,11 @@
 
   // src/layout.tsx
   var import_react_router_dom = __toESM(require_main2());
-  var import_react_router_keep_alive = __toESM(require_lib());
+  var import_lib = __toESM(require_lib());
   var import_jsx_runtime = __toESM(require_jsx_runtime());
   var Layout = () => {
     const { pathname } = (0, import_react_router_dom.useLocation)();
-    const element = (0, import_react_router_keep_alive.useKeepaliveOutlets)();
+    const element = (0, import_lib.useKeepaliveOutlets)();
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
       "div",
       {
@@ -30802,7 +30802,7 @@
 
   // src/index.tsx
   var import_react = __toESM(require_react());
-  var import_react_router_keep_alive2 = __toESM(require_lib());
+  var import_lib2 = __toESM(require_lib());
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
   var Hello = () => {
     const [text, setText] = (0, import_react.useState)("Hello Emi!");
@@ -30832,7 +30832,7 @@
     ] });
   };
   var App = () => {
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_keep_alive2.KeepAliveLayout, { keepalivePaths: ["/"], children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_react_router_dom2.Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Layout, {}), children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_lib2.KeepAliveLayout, { keepalivePaths: ["/"], children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_react_router_dom2.Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Layout, {}), children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Hello, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.Route, { path: "/users", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Users, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_router_dom2.Route, { path: "/me", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Me, {}) })

@@ -20459,7 +20459,7 @@ var require_koa_static = __commonJS({
   }
 });
 
-// src/cli/index.ts
+// src/node/cli/index.ts
 var cli_exports = {};
 __export(cli_exports, {
   cli: () => cli
@@ -20488,15 +20488,16 @@ var package_default = {
   name: "emi",
   version: "0.0.1",
   description: "",
-  main: "./lib/cli.js",
+  main: "./lib/node/cli.js",
   bin: "./bin/emi.js",
   files: [
     "./lib",
     "./bin"
   ],
   scripts: {
-    build: "pnpm build:client && npx esbuild ./src/** --platform=node --external:esbuild --bundle --outdir=lib",
-    "build:client": "npx esbuild ./client/** --external:esbuild --bundle --outdir=lib/client",
+    "build:node": "npx esbuild ./src/node/** --platform=node --external:esbuild --bundle --outdir=lib/node",
+    "build:client": "npx esbuild ./src/client/** --external:esbuild --bundle --outdir=lib/client",
+    build: "pnpm build:node && pnpm build:client",
     dev: "pnpm build --watch"
   },
   keywords: [],
@@ -20522,10 +20523,10 @@ var import_application = __toESM(require_application(), 1);
 var koa_default = import_application.default;
 var HttpError = import_application.default.HttpError;
 
-// src/cli/commands/dev.ts
+// src/node/cli/commands/dev.ts
 var import_esbuild = require("esbuild");
 
-// src/constants/html.ts
+// src/node/constants/html.ts
 var DEFAULT_OUTDIR = "dist";
 var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
 var DEFAULT_CSS_ENTRY_POINT = "./src/index.css";
@@ -20533,7 +20534,7 @@ var DEFAULT_HOST = "127.0.0.1";
 var DEFAULT_PORT = 2222;
 var DEFAULT_BUILD_PORT = 3333;
 
-// src/cli/commands/dev.ts
+// src/node/cli/commands/dev.ts
 var import_path = __toESM(require("path"));
 var import_portfinder = __toESM(require_portfinder());
 var import_koa_static = __toESM(require_koa_static());
@@ -20647,7 +20648,7 @@ async function findPort(port) {
   return newPort;
 }
 
-// src/cli/cli.ts
+// src/node/cli/cli.ts
 var cli = program;
 cli.name("emi").description("CLI to emi").version(package_default.version, "-v,--version");
 cli.addCommand(dev);

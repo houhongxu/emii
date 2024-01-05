@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  // client/hot-reloading.ts
+  // src/client/hot-reloading.ts
   new EventSource("/esbuild").addEventListener("change", (e) => {
     const { added, removed, updated } = JSON.parse(e.data);
     if (!added.length && !removed.length && updated.length === 1 && updated[0].includes(".css")) {
