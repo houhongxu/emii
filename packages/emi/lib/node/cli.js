@@ -20529,7 +20529,6 @@ var import_esbuild = require("esbuild");
 // src/node/constants/html.ts
 var DEFAULT_OUTDIR = "dist";
 var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
-var DEFAULT_CSS_ENTRY_POINT = "./src/index.css";
 var DEFAULT_HOST = "127.0.0.1";
 var DEFAULT_PORT = 2222;
 var DEFAULT_BUILD_PORT = 3333;
@@ -20554,7 +20553,7 @@ dev.option("-p,--port <value>", "log it", DEFAULT_PORT.toString()).action(async 
 });
 async function devKoaServe(koaPort, buildPort) {
   const app = new koa_default();
-  app.use((0, import_koa_static.default)(__dirname));
+  app.use((0, import_koa_static.default)(import_path.default.resolve(__dirname, "../")));
   app.use(async (ctx, next) => {
     if (ctx.url === "/") {
       ctx.set("Content-Type", "text/html");
@@ -20620,10 +20619,7 @@ async function devBuildServe(buildPort) {
       "process.env.NODE_ENV": JSON.stringify("development")
     },
     // 在命令执行的路径查找入口
-    entryPoints: [
-      import_path.default.join(process.cwd(), DEFAULT_JS_ENTRY_POINT),
-      import_path.default.join(process.cwd(), DEFAULT_CSS_ENTRY_POINT)
-    ]
+    entryPoints: [import_path.default.join(process.cwd(), DEFAULT_JS_ENTRY_POINT)]
   });
   await ctx.watch();
   await ctx.serve({

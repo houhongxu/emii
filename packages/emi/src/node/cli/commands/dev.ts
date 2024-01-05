@@ -3,7 +3,6 @@ import Koa from 'koa'
 import { context, ServeOnRequestArgs } from 'esbuild'
 import {
   DEFAULT_JS_ENTRY_POINT,
-  DEFAULT_CSS_ENTRY_POINT,
   DEFAULT_OUTDIR,
   DEFAULT_PORT,
   DEFAULT_HOST,
@@ -42,7 +41,7 @@ dev
 async function devKoaServe(koaPort: number, buildPort: number) {
   const app = new Koa()
 
-  app.use(staticMiddleware(__dirname))
+  app.use(staticMiddleware(path.resolve(__dirname, '../')))
 
   app.use(async (ctx, next) => {
     if (ctx.url === '/') {
@@ -55,6 +54,7 @@ async function devKoaServe(koaPort: number, buildPort: number) {
     <head>
         <meta charset="UTF-8">
         <title>Emi</title>
+        // 客户端的css在js中引入后会打包为index.css
         <link rel="stylesheet" href="http://${DEFAULT_HOST}:${buildPort}/index.css"></link>
     </head>
     
@@ -117,10 +117,7 @@ async function devBuildServe(buildPort: number) {
       'process.env.NODE_ENV': JSON.stringify('development'),
     },
     // 在命令执行的路径查找入口
-    entryPoints: [
-      path.join(process.cwd(), DEFAULT_JS_ENTRY_POINT),
-      path.join(process.cwd(), DEFAULT_CSS_ENTRY_POINT),
-    ],
+    entryPoints: [path.join(process.cwd(), DEFAULT_JS_ENTRY_POINT)],
   })
 
   // watch用于监听文件变动后发送reload事件
