@@ -20526,12 +20526,12 @@ var HttpError = import_application.default.HttpError;
 // src/node/cli/commands/dev.ts
 var import_esbuild = require("esbuild");
 
-// src/node/constants/html.ts
-var DEFAULT_OUTDIR = "dist";
-var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
-var DEFAULT_HOST = "127.0.0.1";
-var DEFAULT_PORT = 2222;
-var DEFAULT_BUILD_PORT = 3333;
+// src/node/constants.ts
+var DEFAULT_OUTPUT_PATH = "dist";
+var DEFAULT_ENTRY_PATH = "./src/index.tsx";
+var DEFAULT_DEV_HOST = "127.0.0.1";
+var DEFAULT_DEV_PORT = 2222;
+var DEFAULT_ESBUILD_PORT = 3333;
 
 // src/node/cli/commands/dev.ts
 var import_path = __toESM(require("path"));
@@ -20539,21 +20539,22 @@ var import_portfinder = __toESM(require_portfinder());
 var import_koa_static = __toESM(require_koa_static());
 var import_http = __toESM(require("http"));
 var dev = new Command("dev");
-dev.option("-p,--port <value>", "log it", DEFAULT_PORT.toString()).action(async (options) => {
+dev.option("-p,--port <value>", "log it", DEFAULT_DEV_PORT.toString()).action(async (options) => {
   const port = options.port;
+  const cwd = process.cwd();
   const koaPort = await findPort(parseInt(port));
-  const buildPort = await findPort(DEFAULT_BUILD_PORT);
+  const esbuildPort = await findPort(DEFAULT_ESBUILD_PORT);
   try {
-    await devKoaServe(koaPort, buildPort);
-    await devBuildServe(buildPort);
+    await devKoaServe(koaPort, esbuildPort);
+    await devESBuildServe(esbuildPort);
   } catch (e) {
     console.log(e);
     process.exit(1);
   }
 });
-async function devKoaServe(koaPort, buildPort) {
+async function devKoaServe(koaPort, esbuildPort) {
   const app = new koa_default();
-  app.use((0, import_koa_static.default)(import_path.default.resolve(__dirname, "../")));
+  app.use((0, import_koa_static.default)(import_path.default.join(__dirname, "../")));
   app.use(async (ctx, next) => {
     if (ctx.url === "/") {
       ctx.set("Content-Type", "text/html");
@@ -20564,15 +20565,16 @@ async function devKoaServe(koaPort, buildPort) {
     <head>
         <meta charset="UTF-8">
         <title>Emi</title>
-        <link rel="stylesheet" href="http://${DEFAULT_HOST}:${buildPort}/index.css"></link>
+        <link rel="stylesheet" href="http://${DEFAULT_DEV_HOST}:${esbuildPort}/index.css"></link>
     </head>
     
     <body>
         <div id="root">
             <span>loading...</span>
-            <script src="http://${DEFAULT_HOST}:${buildPort}/index.js"></script>
-            <script src="/client/hot-reloading.js"></script>
         </div>
+
+        <script src="http://${DEFAULT_DEV_HOST}:${esbuildPort}/index.js"></script>
+        <script src="/client/hot-reloading.js"></script>
     </body>
     </html>
     `;
@@ -20584,8 +20586,8 @@ async function devKoaServe(koaPort, buildPort) {
   });
   app.use(async (ctx) => {
     const options = {
-      hostname: DEFAULT_HOST,
-      port: buildPort,
+      hostname: DEFAULT_DEV_HOST,
+      port: esbuildPort,
       path: ctx.req.url,
       method: ctx.req.method,
       headers: ctx.req.headers
@@ -20603,14 +20605,14 @@ async function devKoaServe(koaPort, buildPort) {
   });
   return new Promise((resolve) => {
     app.listen(koaPort, async () => {
-      console.log(`App listening at http://${DEFAULT_HOST}:${koaPort}`);
+      console.log(`App listening at http://${DEFAULT_DEV_HOST}:${koaPort}`);
       resolve(koaPort);
     });
   });
 }
-async function devBuildServe(buildPort) {
+async function devESBuildServe(esbuildPort) {
   const ctx = await (0, import_esbuild.context)({
-    outdir: DEFAULT_OUTDIR,
+    outdir: DEFAULT_OUTPUT_PATH,
     bundle: true,
     format: "iife",
     logLevel: "error",
@@ -20619,13 +20621,13 @@ async function devBuildServe(buildPort) {
       "process.env.NODE_ENV": JSON.stringify("development")
     },
     // 在命令执行的路径查找入口
-    entryPoints: [import_path.default.join(process.cwd(), DEFAULT_JS_ENTRY_POINT)]
+    entryPoints: [import_path.default.resolve(DEFAULT_ENTRY_PATH)]
   });
   await ctx.watch();
   await ctx.serve({
-    servedir: DEFAULT_OUTDIR,
-    host: DEFAULT_HOST,
-    port: buildPort,
+    servedir: DEFAULT_OUTPUT_PATH,
+    host: DEFAULT_DEV_HOST,
+    port: esbuildPort,
     onRequest: (args2) => {
       console.log(`${args2.method}: ${args2.path} ${args2.timeInMS} ms`);
     }

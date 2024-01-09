@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { MainLayout } from './layout/MainLayout'
+import { MainLayout } from './layouts/MainLayout'
 import { createElement } from 'react'
 import { Hello } from './pages/hello'
 import { Users } from './pages/users'

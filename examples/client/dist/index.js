@@ -30736,13 +30736,13 @@
   var import_client = __toESM(require_client());
   var import_react_router_dom5 = __toESM(require_main2());
 
-  // src/layout/MainLayout.tsx
+  // src/layouts/MainLayout.tsx
   var import_react_router_dom = __toESM(require_main2());
-  var import_lib = __toESM(require_lib());
+  var import_react_router_keep_alive = __toESM(require_lib());
   var import_jsx_runtime = __toESM(require_jsx_runtime());
   var MainLayout = () => {
     const { pathname } = (0, import_react_router_dom.useLocation)();
-    const element = (0, import_lib.useKeepaliveOutlets)();
+    const element = (0, import_react_router_keep_alive.useKeepaliveOutlets)();
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
       "div",
       {
@@ -30802,15 +30802,15 @@
 
   // src/index.tsx
   var import_react2 = __toESM(require_react());
-  var import_lib2 = __toESM(require_lib());
 
   // src/pages/hello.tsx
   var import_react = __toESM(require_react());
   var import_react_router_dom2 = __toESM(require_main2());
+  var import_react_router_keep_alive2 = __toESM(require_lib());
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
   var Hello = () => {
     const [text, setText] = (0, import_react.useState)("Hello Emi!");
-    const { dropByPath } = (0, import_react.useContext)(KeepAliveContext);
+    const { dropByPath } = (0, import_react.useContext)(import_react_router_keep_alive2.KeepAliveContext);
     return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
         "p",
@@ -30848,9 +30848,10 @@
   };
 
   // src/index.tsx
+  var import_react_router_keep_alive3 = __toESM(require_lib());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var App = () => {
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_lib2.KeepAliveLayout, { keepalivePaths: ["/"], children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_react_router_dom5.Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(MainLayout, {}), children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_keep_alive3.KeepAliveLayout, { keepalivePaths: ["/"], children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_react_router_dom5.Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(MainLayout, {}), children: [
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Hello, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.Route, { path: "/users", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Users, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom5.Route, { path: "/me", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Me, {}) })

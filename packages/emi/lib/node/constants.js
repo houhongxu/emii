@@ -17,28 +17,32 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/node/constants/index.ts
+// src/node/constants.ts
 var constants_exports = {};
 __export(constants_exports, {
-  DEFAULT_BUILD_PORT: () => DEFAULT_BUILD_PORT,
-  DEFAULT_HOST: () => DEFAULT_HOST,
-  DEFAULT_JS_ENTRY_POINT: () => DEFAULT_JS_ENTRY_POINT,
-  DEFAULT_OUTDIR: () => DEFAULT_OUTDIR,
-  DEFAULT_PORT: () => DEFAULT_PORT
+  DEFAULT_DEV_HOST: () => DEFAULT_DEV_HOST,
+  DEFAULT_DEV_PORT: () => DEFAULT_DEV_PORT,
+  DEFAULT_ENTRY_PATH: () => DEFAULT_ENTRY_PATH,
+  DEFAULT_ESBUILD_PORT: () => DEFAULT_ESBUILD_PORT,
+  DEFAULT_LAYOUT_PATH: () => DEFAULT_LAYOUT_PATH,
+  DEFAULT_OUTPUT_PATH: () => DEFAULT_OUTPUT_PATH,
+  DEFAULT_TEMPORARY_PATH: () => DEFAULT_TEMPORARY_PATH
 });
 module.exports = __toCommonJS(constants_exports);
-
-// src/node/constants/html.ts
-var DEFAULT_OUTDIR = "dist";
-var DEFAULT_JS_ENTRY_POINT = "./src/index.tsx";
-var DEFAULT_HOST = "127.0.0.1";
-var DEFAULT_PORT = 2222;
-var DEFAULT_BUILD_PORT = 3333;
+var DEFAULT_OUTPUT_PATH = "dist";
+var DEFAULT_ENTRY_PATH = "./src/index.tsx";
+var DEFAULT_TEMPORARY_PATH = ".emi";
+var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
+var DEFAULT_DEV_HOST = "127.0.0.1";
+var DEFAULT_DEV_PORT = 2222;
+var DEFAULT_ESBUILD_PORT = 3333;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  DEFAULT_BUILD_PORT,
-  DEFAULT_HOST,
-  DEFAULT_JS_ENTRY_POINT,
-  DEFAULT_OUTDIR,
-  DEFAULT_PORT
+  DEFAULT_DEV_HOST,
+  DEFAULT_DEV_PORT,
+  DEFAULT_ENTRY_PATH,
+  DEFAULT_ESBUILD_PORT,
+  DEFAULT_LAYOUT_PATH,
+  DEFAULT_OUTPUT_PATH,
+  DEFAULT_TEMPORARY_PATH
 });

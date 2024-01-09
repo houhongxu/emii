@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { useKeepaliveOutlets } from '../../../../packages/react-keep-router-alive/lib'
+import { useKeepaliveOutlets } from 'react-router-keep-alive'
 
 export const MainLayout = () => {
   const { pathname } = useLocation()
