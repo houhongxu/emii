@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export const Me = () => {
+const Me = () => {
   return (
     <>
       <p> Me </p>
@@ -8,3 +8,5 @@ export const Me = () => {
     </>
   )
 }
+
+export default Me

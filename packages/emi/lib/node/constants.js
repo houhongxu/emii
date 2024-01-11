@@ -30,8 +30,8 @@ __export(constants_exports, {
 });
 module.exports = __toCommonJS(constants_exports);
 var DEFAULT_OUTPUT_PATH = "dist";
-var DEFAULT_ENTRY_PATH = "./src/index.tsx";
-var DEFAULT_TEMPORARY_PATH = ".emi";
+var DEFAULT_ENTRY_PATH = "./emi.tsx";
+var DEFAULT_TEMPORARY_PATH = "./.emi";
 var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
 var DEFAULT_DEV_HOST = "127.0.0.1";
 var DEFAULT_DEV_PORT = 2222;

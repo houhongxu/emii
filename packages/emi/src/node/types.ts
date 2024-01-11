@@ -7,11 +7,11 @@ export interface IAppData {
      */
     cwd: string
     /**
-     * src
+     * src路径
      */
     absSrcPath: string
     /**
-     * pages
+     * pages路径
      */
     absPagesPath: string
     /**
@@ -27,9 +27,12 @@ export interface IAppData {
      */
     absEntryPath: string
     /**
-     *
+     * nodemodules路径
      */
     absNodeModulesPath: string
+    /**
+     * layout路径
+     */
     absLayoutPath: string
   }
   pkg: any

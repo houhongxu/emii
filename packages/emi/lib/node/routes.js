@@ -33,13 +33,14 @@ __export(routes_exports, {
   getRoutes: () => getRoutes
 });
 module.exports = __toCommonJS(routes_exports);
-var import_fs = require("fs");
 var import_path = __toESM(require("path"));
-function getRoutes({
+var import_fs = require("fs");
+var import_promises = require("fs/promises");
+async function getRoutes({
   appData
 }) {
-  return new Promise((resolve, reject) => {
-    const files = getFiles(appData.paths.absPagesPath);
+  return new Promise(async (resolve, reject) => {
+    const files = await getFiles(appData.paths.absPagesPath);
     const routes = filesToRoutes(files, appData.paths.absPagesPath);
     const absLayoutPath = appData.paths.absLayoutPath;
     if ((0, import_fs.existsSync)(absLayoutPath)) {
@@ -55,20 +56,19 @@ function getRoutes({
     }
   });
 }
-function getFiles(root) {
+async function getFiles(root) {
   if (!(0, import_fs.existsSync)(root))
     return [];
-  return (0, import_fs.readdirSync)(root).filter((file) => {
-    const absFilePath = import_path.default.join(root, file);
-    const fileStat = (0, import_fs.statSync)(absFilePath);
-    const isFile = fileStat.isFile();
-    if (isFile) {
-      if (!/\.tsx?$/.test(file)) {
-        return false;
-      } else {
-        return true;
-      }
-    }
+  const files = await (0, import_promises.readdir)(root);
+  const stats = await Promise.all(
+    files.map((file) => {
+      const absFilePath = import_path.default.join(root, file);
+      return (0, import_promises.stat)(absFilePath);
+    })
+  );
+  return files.filter((file, index) => {
+    const isFile = stats[index].isFile();
+    return isFile && /\.tsx?$/.test(file);
   });
 }
 function filesToRoutes(files, pagesPath) {

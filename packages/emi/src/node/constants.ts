@@ -5,12 +5,12 @@ export const DEFAULT_OUTPUT_PATH = 'dist'
 /**
  * 打包入口
  */
-export const DEFAULT_ENTRY_PATH = './src/index.tsx'
+export const DEFAULT_ENTRY_PATH = './emi.tsx'
 
 /**
  * 临时文件夹
  */
-export const DEFAULT_TEMPORARY_PATH = '.emi'
+export const DEFAULT_TEMPORARY_PATH = './.emi'
 /**
  * 主布局
  */
@@ -20,6 +20,7 @@ export const DEFAULT_LAYOUT_PATH = './src/layouts/index.tsx'
  * dev域名
  */
 export const DEFAULT_DEV_HOST = '127.0.0.1'
+
 /**
  * dev端口
  */

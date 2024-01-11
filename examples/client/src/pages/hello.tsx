@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './hello.css'
 import { KeepAliveContext } from 'react-router-keep-alive'
 
-export const Hello = () => {
+const Hello = () => {
   const [text, setText] = useState('Hello Emi!')
   const { dropByPath } = useContext(KeepAliveContext)
 
@@ -22,3 +22,4 @@ export const Hello = () => {
     </>
   )
 }
+export default Hello

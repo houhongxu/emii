@@ -1,18 +1,19 @@
-import { existsSync, readdirSync, statSync } from 'fs'
 import path from 'path'
 import { IAppData, IRoute } from './types'
+import { existsSync, statSync } from 'fs'
+import { readdir, stat } from 'fs/promises'
 
 /**
  * 获取路由
  */
 
-export function getRoutes({
+export async function getRoutes({
   appData,
 }: {
   appData: IAppData
 }): Promise<IRoute[]> {
-  return new Promise((resolve, reject) => {
-    const files = getFiles(appData.paths.absPagesPath)
+  return new Promise(async (resolve, reject) => {
+    const files = await getFiles(appData.paths.absPagesPath)
     const routes = filesToRoutes(files, appData.paths.absPagesPath)
 
     // 包裹全局layout
@@ -35,21 +36,20 @@ export function getRoutes({
 /**
  * 获取文件路径，当前仅支持一级tsx文件
  */
-function getFiles(root: string) {
+async function getFiles(root: string) {
   if (!existsSync(root)) return []
 
-  return readdirSync(root).filter((file) => {
-    const absFilePath = path.join(root, file)
-    const fileStat = statSync(absFilePath)
-    const isFile = fileStat.isFile()
+  const files = await readdir(root)
+  const stats = await Promise.all(
+    files.map((file) => {
+      const absFilePath = path.join(root, file)
+      return stat(absFilePath)
+    }),
+  )
+  return files.filter((file, index) => {
+    const isFile = stats[index].isFile()
 
-    if (isFile) {
-      if (!/\.tsx?$/.test(file)) {
-        return false
-      } else {
-        return true
-      }
-    }
+    return isFile && /\.tsx?$/.test(file)
   })
 }
 

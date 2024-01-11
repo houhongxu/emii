@@ -37,8 +37,8 @@ var import_path = __toESM(require("path"));
 
 // src/node/constants.ts
 var DEFAULT_OUTPUT_PATH = "dist";
-var DEFAULT_ENTRY_PATH = "./src/index.tsx";
-var DEFAULT_TEMPORARY_PATH = ".emi";
+var DEFAULT_ENTRY_PATH = "./emi.tsx";
+var DEFAULT_TEMPORARY_PATH = "./.emi";
 var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
 
 // package.json
