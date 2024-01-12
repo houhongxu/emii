@@ -5,6 +5,9 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -27,6 +30,44 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
+// package.json
+var require_package = __commonJS({
+  "package.json"(exports2, module2) {
+    module2.exports = {
+      name: "emi",
+      version: "0.0.1",
+      description: "",
+      main: "./lib/node/cli.js",
+      bin: "./bin/emi.js",
+      files: [
+        "./lib",
+        "./bin"
+      ],
+      scripts: {
+        "build:node": "npx esbuild ./src/node/** --platform=node --external:esbuild --bundle --outdir=lib/node",
+        "build:client": "npx esbuild ./src/client/** --external:esbuild --bundle --outdir=lib/client",
+        build: "pnpm build:node && pnpm build:client",
+        dev: "pnpm build --watch"
+      },
+      keywords: [],
+      author: "",
+      license: "ISC",
+      dependencies: {
+        commander: "^11.1.0",
+        esbuild: "^0.19.10",
+        koa: "^2.14.2",
+        "koa-static": "^5.0.0",
+        portfinder: "^1.0.32"
+      },
+      devDependencies: {
+        "@types/koa": "^2.13.12",
+        "@types/koa-static": "~4.0.4",
+        "@types/node": "^20.10.5"
+      }
+    };
+  }
+});
+
 // src/node/appData.ts
 var appData_exports = {};
 __export(appData_exports, {
@@ -35,46 +76,13 @@ __export(appData_exports, {
 module.exports = __toCommonJS(appData_exports);
 var import_path = __toESM(require("path"));
 
-// src/node/constants.ts
+// src/node/constants/paths.ts
 var DEFAULT_OUTPUT_PATH = "dist";
 var DEFAULT_ENTRY_PATH = "./emi.tsx";
-var DEFAULT_TEMPORARY_PATH = "./.emi";
+var DEFAULT_TEMPORARY_PATH = ".emi";
 var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
-
-// package.json
-var package_default = {
-  name: "emi",
-  version: "0.0.1",
-  description: "",
-  main: "./lib/node/cli.js",
-  bin: "./bin/emi.js",
-  files: [
-    "./lib",
-    "./bin"
-  ],
-  scripts: {
-    "build:node": "npx esbuild ./src/node/** --platform=node --external:esbuild --bundle --outdir=lib/node",
-    "build:client": "npx esbuild ./src/client/** --external:esbuild --bundle --outdir=lib/client",
-    build: "pnpm build:node && pnpm build:client",
-    dev: "pnpm build --watch"
-  },
-  keywords: [],
-  author: "",
-  license: "ISC",
-  dependencies: {
-    commander: "^11.1.0",
-    esbuild: "^0.19.10",
-    koa: "^2.14.2",
-    "koa-better-http-proxy": "^0.2.10",
-    "koa-static": "^5.0.0",
-    portfinder: "^1.0.32"
-  },
-  devDependencies: {
-    "@types/koa": "^2.13.12",
-    "@types/koa-static": "~4.0.4",
-    "@types/node": "^20.10.5"
-  }
-};
+var DEFAULT_CONFIG_PATH = "emi.config.ts";
+var DEFAULT_ESBUILD_SERVE_PATH = ".esbuild";
 
 // src/node/appData.ts
 function getAppData({ cwd }) {
@@ -83,9 +91,15 @@ function getAppData({ cwd }) {
     const absNodeModulesPath = import_path.default.join(cwd, "node_modules");
     const absOutputPath = import_path.default.join(cwd, DEFAULT_OUTPUT_PATH);
     const absLayoutPath = import_path.default.join(cwd, DEFAULT_LAYOUT_PATH);
+    const absConfigPath = import_path.default.join(cwd, DEFAULT_CONFIG_PATH);
     const absPagesPath = import_path.default.join(absSrcPath, "pages");
     const absTempPath = import_path.default.join(absNodeModulesPath, DEFAULT_TEMPORARY_PATH);
     const absEntryPath = import_path.default.join(absTempPath, DEFAULT_ENTRY_PATH);
+    const absEsbuildServePath = import_path.default.join(
+      absTempPath,
+      DEFAULT_ESBUILD_SERVE_PATH
+    );
+    const absHtmlPath = import_path.default.join(absTempPath, "index.html");
     const paths = {
       cwd,
       absSrcPath,
@@ -94,9 +108,12 @@ function getAppData({ cwd }) {
       absOutputPath,
       absEntryPath,
       absNodeModulesPath,
-      absLayoutPath
+      absLayoutPath,
+      absConfigPath,
+      absEsbuildServePath,
+      absHtmlPath
     };
-    resolve({ paths, pkg: package_default });
+    resolve({ paths, pkg: require_package() });
   });
 }
 // Annotate the CommonJS export names for ESM import in node:

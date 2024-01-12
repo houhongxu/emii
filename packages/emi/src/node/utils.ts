@@ -1,3 +1,4 @@
+import EventEmitter from 'events'
 import portfinder from 'portfinder'
 
 /**
@@ -9,7 +10,12 @@ export async function findPort(port: number) {
 
     return newPort
   } catch (e) {
-    console.log('无可用端口', e)
+    console.error('无可用端口', e)
     process.exit(1)
   }
 }
+
+/**
+ * 事件系统
+ */
+export const EmiEmitter = new EventEmitter()

@@ -1,7 +1,7 @@
 "use strict";
 (() => {
   // src/client/hot-reloading.ts
-  new EventSource("/esbuild").addEventListener("change", (e) => {
+  new EventSource("/esbuildIndex").addEventListener("change", (e) => {
     const { added, removed, updated } = JSON.parse(e.data);
     if (!added.length && !removed.length && updated.length === 1 && updated[0].includes(".css")) {
       for (const link of document.getElementsByTagName("link")) {
@@ -15,6 +15,10 @@
         }
       }
     }
+    location.reload();
+  });
+  new EventSource("/esbuildConfig").addEventListener("change", (e) => {
+    const { added, removed, updated } = JSON.parse(e.data);
     location.reload();
   });
 })();

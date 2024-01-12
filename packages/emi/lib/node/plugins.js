@@ -2895,27 +2895,31 @@ var require_portfinder = __commonJS({
   }
 });
 
-// src/node/utils.ts
-var utils_exports = {};
-__export(utils_exports, {
-  EmiEmitter: () => EmiEmitter,
-  findPort: () => findPort
+// src/node/plugins/index.ts
+var plugins_exports = {};
+__export(plugins_exports, {
+  esbuildRebuildPlugin: () => esbuildRebuildPlugin
 });
-module.exports = __toCommonJS(utils_exports);
+module.exports = __toCommonJS(plugins_exports);
+
+// src/node/utils.ts
 var import_events = __toESM(require("events"));
 var import_portfinder = __toESM(require_portfinder());
-async function findPort(port) {
-  try {
-    const newPort = await import_portfinder.default.getPortPromise({ port });
-    return newPort;
-  } catch (e) {
-    console.error("\u65E0\u53EF\u7528\u7AEF\u53E3", e);
-    process.exit(1);
-  }
-}
 var EmiEmitter = new import_events.default();
+
+// src/node/constants/events.ts
+var CONFIG_REBUILD_EVENT = "config_rebuild";
+
+// src/node/plugins/esbuildRebuildPlugin.ts
+var esbuildRebuildPlugin = {
+  name: "esbuildRebuildPlugin",
+  setup({ onEnd }) {
+    onEnd(() => {
+      EmiEmitter.emit(CONFIG_REBUILD_EVENT);
+    });
+  }
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  EmiEmitter,
-  findPort
+  esbuildRebuildPlugin
 });

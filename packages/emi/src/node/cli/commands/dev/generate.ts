@@ -1,8 +1,7 @@
 import { existsSync } from 'fs'
-import { IAppData, IRoute } from '../../../types'
+import { IAppData, IRoute, IUserConfig } from '../../../types'
 import { mkdir, writeFile } from 'fs/promises'
-import { DEFAULT_DEV_HOST } from '../../../constants'
-import path from 'path'
+import { DEFAULT_DEV_HOST, DEFAULT_DEV_PORT } from '../../../constants'
 
 let count = 0
 
@@ -12,9 +11,11 @@ let count = 0
 export async function generateIndex({
   appData,
   routes,
+  userConfig,
 }: {
   appData: IAppData
   routes: IRoute[]
+  userConfig: IUserConfig
 }) {
   /**
    * 获取导入与路由字符串
@@ -55,7 +56,12 @@ export async function generateIndex({
 
   const App = () => {
     return (
-      <KeepAliveLayout keepalivePaths={['/']}>
+      <KeepAliveLayout keepalivePaths={[${
+        // 模板字符串会吞掉数组和字符串，所以在外面套[]，在字符串值外面套''
+        userConfig.keepalive?.map((i) =>
+          typeof i === 'string' ? `'${i}'` : i,
+        ) || []
+      }]}>
         <BrowserRouter>
           <Routes>
             ${routeStr}
@@ -86,10 +92,10 @@ export async function generateIndex({
  */
 export async function generateHtml({
   appData,
-  esbuildPort,
+  userConfig,
 }: {
   appData: IAppData
-  esbuildPort: number
+  userConfig: IUserConfig
 }) {
   // 客户端的css在ts中引入后会被esbuild打包为index.css，ts会被esbuild打包为index.js，伪热更新hot-reloading.js文件打包在lib/client/hot-reloading.js
   const content = `
@@ -98,8 +104,8 @@ export async function generateHtml({
     
     <head>
         <meta charset="UTF-8">
-        <title>${appData.pkg.name || 'Emi'}</title>
-        <link rel="stylesheet" href="http://${DEFAULT_DEV_HOST}:${esbuildPort}/index.css"></link>
+        <title>${userConfig.title || appData.pkg.name || 'Emi'}</title>
+        <link rel="stylesheet" href="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.css"></link>
     </head>
     
     <body>
@@ -107,7 +113,7 @@ export async function generateHtml({
             <span>loading...</span>
         </div>
 
-        <script src="http://${DEFAULT_DEV_HOST}:${esbuildPort}/index.js"></script>
+        <script src="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.js"></script>
         <script src="/client/hot-reloading.js"></script>
     </body>
     </html>
@@ -118,11 +124,7 @@ export async function generateHtml({
       await mkdir(appData.paths.absTempPath)
     }
 
-    await writeFile(
-      path.join(appData.paths.absOutputPath, 'index.html'),
-      content,
-      'utf-8',
-    )
+    await writeFile(appData.paths.absHtmlPath, content, 'utf-8')
   } catch (e) {
     console.error('生成html失败', e)
   }

@@ -1,11 +1,12 @@
 import path from 'path'
 import {
+  DEFAULT_CONFIG_PATH,
   DEFAULT_ENTRY_PATH,
+  DEFAULT_ESBUILD_SERVE_PATH,
   DEFAULT_LAYOUT_PATH,
   DEFAULT_OUTPUT_PATH,
   DEFAULT_TEMPORARY_PATH,
 } from './constants'
-import pkg from '../../package.json'
 import { IAppData } from './types'
 
 interface IOptions {
@@ -21,10 +22,16 @@ export function getAppData({ cwd }: IOptions): Promise<IAppData> {
     const absNodeModulesPath = path.join(cwd, 'node_modules')
     const absOutputPath = path.join(cwd, DEFAULT_OUTPUT_PATH)
     const absLayoutPath = path.join(cwd, DEFAULT_LAYOUT_PATH)
+    const absConfigPath = path.join(cwd, DEFAULT_CONFIG_PATH)
 
     const absPagesPath = path.join(absSrcPath, 'pages')
     const absTempPath = path.join(absNodeModulesPath, DEFAULT_TEMPORARY_PATH)
     const absEntryPath = path.join(absTempPath, DEFAULT_ENTRY_PATH)
+    const absEsbuildServePath = path.join(
+      absTempPath,
+      DEFAULT_ESBUILD_SERVE_PATH,
+    )
+    const absHtmlPath = path.join(absTempPath, 'index.html')
 
     const paths = {
       cwd,
@@ -35,8 +42,11 @@ export function getAppData({ cwd }: IOptions): Promise<IAppData> {
       absEntryPath,
       absNodeModulesPath,
       absLayoutPath,
+      absConfigPath,
+      absEsbuildServePath,
+      absHtmlPath,
     }
 
-    resolve({ paths, pkg })
+    resolve({ paths, pkg: require('../../package.json') })
   })
 }

@@ -1,5 +1,5 @@
-// css是无状态的热更新
-new EventSource('/esbuild').addEventListener('change', (e) => {
+// css是无状态的热更新，其他文件监听更新后刷新
+new EventSource('/esbuildIndex').addEventListener('change', (e) => {
   // 记录了带后缀文件名
   const { added, removed, updated } = JSON.parse(e.data)
 
@@ -24,7 +24,16 @@ new EventSource('/esbuild').addEventListener('change', (e) => {
     }
   }
 
-  // 其余情况live-reload刷新
+  // 其余情况触发reload刷新
   // 因为esbuild尚不实现，js热更新，js是有状态的热更新，esbuild文档建议使用其他打包工具，或者使用sessionStorge在reload时重新加载状态，因为打包很快所以也很快
+  location.reload()
+})
+
+// 配置文件监听更新后刷新
+new EventSource('/esbuildConfig').addEventListener('change', (e) => {
+  // 记录了带后缀文件名
+  const { added, removed, updated } = JSON.parse(e.data)
+
+  // 更新就触发
   location.reload()
 })

@@ -17,31 +17,51 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/node/constants.ts
+// src/node/constants/index.ts
 var constants_exports = {};
 __export(constants_exports, {
+  CONFIG_REBUILD_EVENT: () => CONFIG_REBUILD_EVENT,
+  DEFAULT_CONFIG_PATH: () => DEFAULT_CONFIG_PATH,
   DEFAULT_DEV_HOST: () => DEFAULT_DEV_HOST,
   DEFAULT_DEV_PORT: () => DEFAULT_DEV_PORT,
   DEFAULT_ENTRY_PATH: () => DEFAULT_ENTRY_PATH,
-  DEFAULT_ESBUILD_PORT: () => DEFAULT_ESBUILD_PORT,
+  DEFAULT_ESBUILD_CONFIG_PORT: () => DEFAULT_ESBUILD_CONFIG_PORT,
+  DEFAULT_ESBUILD_INDEX_PORT: () => DEFAULT_ESBUILD_INDEX_PORT,
+  DEFAULT_ESBUILD_SERVE_PATH: () => DEFAULT_ESBUILD_SERVE_PATH,
   DEFAULT_LAYOUT_PATH: () => DEFAULT_LAYOUT_PATH,
   DEFAULT_OUTPUT_PATH: () => DEFAULT_OUTPUT_PATH,
   DEFAULT_TEMPORARY_PATH: () => DEFAULT_TEMPORARY_PATH
 });
 module.exports = __toCommonJS(constants_exports);
+
+// src/node/constants/paths.ts
 var DEFAULT_OUTPUT_PATH = "dist";
 var DEFAULT_ENTRY_PATH = "./emi.tsx";
-var DEFAULT_TEMPORARY_PATH = "./.emi";
+var DEFAULT_TEMPORARY_PATH = ".emi";
 var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
-var DEFAULT_DEV_HOST = "127.0.0.1";
+var DEFAULT_CONFIG_PATH = "emi.config.ts";
+var DEFAULT_ESBUILD_SERVE_PATH = ".esbuild";
+
+// src/node/constants/ports.ts
 var DEFAULT_DEV_PORT = 2222;
-var DEFAULT_ESBUILD_PORT = 3333;
+var DEFAULT_ESBUILD_INDEX_PORT = 2223;
+var DEFAULT_ESBUILD_CONFIG_PORT = 2224;
+
+// src/node/constants/hosts.ts
+var DEFAULT_DEV_HOST = "127.0.0.1";
+
+// src/node/constants/events.ts
+var CONFIG_REBUILD_EVENT = "config_rebuild";
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  CONFIG_REBUILD_EVENT,
+  DEFAULT_CONFIG_PATH,
   DEFAULT_DEV_HOST,
   DEFAULT_DEV_PORT,
   DEFAULT_ENTRY_PATH,
-  DEFAULT_ESBUILD_PORT,
+  DEFAULT_ESBUILD_CONFIG_PORT,
+  DEFAULT_ESBUILD_INDEX_PORT,
+  DEFAULT_ESBUILD_SERVE_PATH,
   DEFAULT_LAYOUT_PATH,
   DEFAULT_OUTPUT_PATH,
   DEFAULT_TEMPORARY_PATH

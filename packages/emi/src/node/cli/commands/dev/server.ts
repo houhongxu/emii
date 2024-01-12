@@ -1,84 +1,51 @@
 import Koa from 'koa'
-import { context, ServeOnRequestArgs } from 'esbuild'
-import { IAppData } from '../../../types'
+import { IAppData, IUserConfig } from '../../../types'
 import staticMiddleware from 'koa-static'
 import http from 'http'
 import path from 'path'
-import { DEFAULT_DEV_HOST, DEFAULT_OUTPUT_PATH } from '../../../constants'
-import { generateHtml, generateIndex } from './generate'
-import { getRoutes } from '../../../routes'
-
-export async function createEmiServer({
-  koaPort,
-  esbuildPort,
-  appData,
-}: {
-  koaPort: number
-  esbuildPort: number
-  appData: IAppData
-}) {
-  // 获取路由数据
-  const routes = await getRoutes({ appData })
-
-  // 生成入口index
-  await generateIndex({ appData, routes })
-
-  // 生成并获取入口html
-  const html = await generateHtml({ appData, esbuildPort })
-
-  // 开启esbuild的服务给koa
-  await devESBuildServe({ esbuildPort, appData })
-
-  // 开启koa的服务给浏览器，使用html，拼接esbuild打包的js的script，返回给浏览器
-  await devKoaServe({ koaPort, esbuildPort, html })
-}
+import { DEFAULT_DEV_HOST } from '../../../constants'
+import { esbuildServe } from '../../../esbuildServe'
+import { esbuildRebuildPlugin } from '../../../plugins'
 
 /**
- * dev esbuild监听与服务
- * @description https://esbuild.github.io/api/#live-reload
+ * 通过koa提供的dev服务，koa转发esbuild的服务提供index与config文件的sse事件伪热更新
  */
-async function devESBuildServe({
-  esbuildPort,
+export async function createEmiServer({
+  koaPort,
   appData,
+  esbuildIndexPort,
+  esbuildConfigPort,
 }: {
-  esbuildPort: number
+  koaPort: number
   appData: IAppData
+  esbuildIndexPort: number
+  esbuildConfigPort: number
 }) {
-  const esbuildServePath = path.join(appData.paths.absTempPath, '.esbuild')
-  const ctx = await context({
+  // 开启esbuild的入口服务给koa
+  await esbuildServe({
     platform: 'browser',
-    outdir: esbuildServePath,
-    entryNames: 'index',
-    bundle: true,
-    define: {
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    },
-    entryPoints: [appData.paths.absEntryPath],
-    tsconfig: path.join(appData.paths.cwd, 'tsconfig.json'),
+    outfileName: 'index.js',
+    entry: appData.paths.absEntryPath,
+    port: esbuildIndexPort,
+    appData,
   })
 
-  // watch用于监听文件变动后发送reload事件
-  await ctx.watch()
-
-  // serve用于将打包的js放于服务器并返回最新的打包结果
-  await ctx.serve({
-    servedir: esbuildServePath,
-    host: DEFAULT_DEV_HOST,
-    port: esbuildPort,
-    onRequest: (args: ServeOnRequestArgs) => {
-      console.log(`${args.method}: ${args.path} ${args.timeInMS} ms`)
-    },
+  // 开启esbuild的配置文件服务给koa
+  await esbuildServe({
+    platform: 'node',
+    outfileName: 'config.js',
+    entry: appData.paths.absConfigPath,
+    port: esbuildConfigPort,
+    appData,
+    plugins: [esbuildRebuildPlugin],
   })
 
-  // 实现ctrlc和kill退出
-  process.on('SIGINT', () => {
-    ctx.dispose()
-    process.exit(0)
-  })
-
-  process.on('SIGTERM', () => {
-    ctx.dispose()
-    process.exit(0)
+  // 开启koa的服务给浏览器，使用html，拼接esbuild打包的js的script，返回给浏览器
+  await devKoaServer({
+    port: koaPort,
+    esbuildIndexPort,
+    esbuildConfigPort,
+    appData,
   })
 }
 
@@ -86,27 +53,29 @@ async function devESBuildServe({
  * dev服务
  * @description 由于使用koa返回html加js，所以需要代理esbuild的live-reloading返回的SSE事件等：https://esbuild.github.io/api/#serve-proxy
  */
-async function devKoaServe({
-  koaPort,
-  esbuildPort,
-  html,
+async function devKoaServer({
+  port,
+  esbuildIndexPort,
+  esbuildConfigPort,
+  appData,
 }: {
-  koaPort: number
-  esbuildPort: number
-  html: string
+  port: number
+  esbuildIndexPort: number
+  esbuildConfigPort: number
+  appData: IAppData
 }) {
   const app = new Koa()
 
-  // 静态资源服务，打包后路径为lib/node/cli.js，根据该路径将根路径配置为lib下，用于访问hot-reloading.js
+  // 静态资源服务index.html
+  app.use(staticMiddleware(path.join(appData.paths.absTempPath)))
+  // 静态资源服务hot-reloading.js，打包后路径为lib/node/cli.js，根据该路径将根路径配置为lib下
   app.use(staticMiddleware(path.join(__dirname, '../')))
 
-  // 服务端渲染服务，返回拼接了加载静态资源代码的html
+  // 拦截请求
   app.use(async (ctx, next) => {
-    if (ctx.url === '/') {
-      ctx.set('Content-Type', 'text/html')
+    console.log('请求路径：', ctx.url)
 
-      ctx.body = html
-    } else if (ctx.url.includes('favicon')) {
+    if (ctx.url.includes('favicon')) {
       ctx.body = ''
     } else {
       // 代理
@@ -114,34 +83,75 @@ async function devKoaServe({
     }
   })
 
-  // 代理esbuild服务，返回其sse事件
+  // 代理多个esbuild服务，返回其sse事件
   app.use(async (ctx) => {
-    const options = {
-      hostname: DEFAULT_DEV_HOST,
-      port: esbuildPort,
-      path: ctx.req.url,
-      method: ctx.req.method,
-      headers: ctx.req.headers,
+    /**
+     * 代理esbuild服务
+     */
+    const proxyEsbuldServe = async (options: http.RequestOptions) => {
+      await new Promise((resolve, reject) => {
+        const proxyReq = http.request(options, (proxyRes) => {
+          ctx.status = proxyRes.statusCode ?? 200
+          ctx.set(proxyRes.headers as Record<string, string>)
+
+          // 将静态资源服务器的响应转发到 Koa 的响应中
+          proxyRes.pipe(ctx.res)
+
+          proxyRes.on('end', () => {
+            resolve('end')
+          })
+        })
+
+        // 将 Koa 的请求转发到静态资源服务器
+        ctx.req.pipe(proxyReq)
+
+        proxyReq.on('error', () => {
+          console.error('koa代理esbuild出错')
+          reject()
+        })
+      })
     }
 
-    await new Promise((resolve, reject) => {
-      const proxyReq = http.request(options, (proxyRes) => {
-        ctx.status = proxyRes.statusCode ?? 200
-        ctx.set(proxyRes.headers as Record<string, string>)
-        ctx.body = proxyRes
-        resolve('success')
+    const indexUrls = ['/esbuildIndex', '/index.js', 'index.css']
+    if (indexUrls.some((url) => ctx.url.includes(url))) {
+      // sse事件路径为固定值
+      const path = ctx.url === '/esbuildIndex' ? '/esbuild' : ctx.url
+      await proxyEsbuldServe({
+        hostname: DEFAULT_DEV_HOST,
+        port: esbuildIndexPort,
+        path,
+        method: ctx.req.method,
+        headers: ctx.req.headers,
       })
+    }
 
-      proxyReq.on('error', reject)
-
-      ctx.req.pipe(proxyReq)
-    })
+    if (ctx.url === '/esbuildConfig') {
+      await proxyEsbuldServe({
+        hostname: DEFAULT_DEV_HOST,
+        port: esbuildConfigPort,
+        path: '/esbuild',
+        method: ctx.req.method,
+        headers: ctx.req.headers,
+      })
+    }
   })
 
   return new Promise((resolve) => {
-    app.listen(koaPort, async () => {
-      console.log(`App listening at http://${DEFAULT_DEV_HOST}:${koaPort}`)
-      resolve(koaPort)
+    const server = app.listen(port, async () => {
+      console.log(`App listening at http://${DEFAULT_DEV_HOST}:${port}`)
+
+      resolve(port)
+    })
+
+    // 实现ctrlc和kill退出
+    process.on('SIGINT', () => {
+      server.close()
+      process.exit(0)
+    })
+
+    process.on('SIGTERM', () => {
+      server.close()
+      process.exit(0)
     })
   })
 }

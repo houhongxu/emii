@@ -933,9 +933,9 @@ var require_suggestSimilar = __commonJS({
 // ../../node_modules/.pnpm/commander@11.1.0/node_modules/commander/lib/command.js
 var require_command = __commonJS({
   "../../node_modules/.pnpm/commander@11.1.0/node_modules/commander/lib/command.js"(exports2) {
-    var EventEmitter = require("events").EventEmitter;
+    var EventEmitter2 = require("events").EventEmitter;
     var childProcess = require("child_process");
-    var path5 = require("path");
+    var path6 = require("path");
     var fs = require("fs");
     var process2 = require("process");
     var { Argument: Argument2, humanReadableArgName } = require_argument();
@@ -943,7 +943,7 @@ var require_command = __commonJS({
     var { Help: Help2 } = require_help();
     var { Option: Option2, splitOptionFlags, DualOptions } = require_option();
     var { suggestSimilar } = require_suggestSimilar();
-    var Command2 = class _Command extends EventEmitter {
+    var Command2 = class _Command extends EventEmitter2 {
       /**
        * Initialize a new `Command`.
        *
@@ -1768,10 +1768,10 @@ Expecting one of '${allowedValues.join("', '")}'`);
         let launchWithNode = false;
         const sourceExt = [".js", ".ts", ".tsx", ".mjs", ".cjs"];
         function findFile(baseDir, baseName) {
-          const localBin = path5.resolve(baseDir, baseName);
+          const localBin = path6.resolve(baseDir, baseName);
           if (fs.existsSync(localBin))
             return localBin;
-          if (sourceExt.includes(path5.extname(baseName)))
+          if (sourceExt.includes(path6.extname(baseName)))
             return void 0;
           const foundExt = sourceExt.find((ext) => fs.existsSync(`${localBin}${ext}`));
           if (foundExt)
@@ -1789,19 +1789,19 @@ Expecting one of '${allowedValues.join("', '")}'`);
           } catch (err) {
             resolvedScriptPath = this._scriptPath;
           }
-          executableDir = path5.resolve(path5.dirname(resolvedScriptPath), executableDir);
+          executableDir = path6.resolve(path6.dirname(resolvedScriptPath), executableDir);
         }
         if (executableDir) {
           let localFile = findFile(executableDir, executableFile);
           if (!localFile && !subcommand._executableFile && this._scriptPath) {
-            const legacyName = path5.basename(this._scriptPath, path5.extname(this._scriptPath));
+            const legacyName = path6.basename(this._scriptPath, path6.extname(this._scriptPath));
             if (legacyName !== this._name) {
               localFile = findFile(executableDir, `${legacyName}-${subcommand._name}`);
             }
           }
           executableFile = localFile || executableFile;
         }
-        launchWithNode = sourceExt.includes(path5.extname(executableFile));
+        launchWithNode = sourceExt.includes(path6.extname(executableFile));
         let proc;
         if (process2.platform !== "win32") {
           if (launchWithNode) {
@@ -2603,7 +2603,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @return {Command}
        */
       nameFromFilename(filename) {
-        this._name = path5.basename(filename, path5.extname(filename));
+        this._name = path6.basename(filename, path6.extname(filename));
         return this;
       }
       /**
@@ -2617,10 +2617,10 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @param {string} [path]
        * @return {string|null|Command}
        */
-      executableDir(path6) {
-        if (path6 === void 0)
+      executableDir(path7) {
+        if (path7 === void 0)
           return this._executableDir;
-        this._executableDir = path6;
+        this._executableDir = path7;
         return this;
       }
       /**
@@ -2836,7 +2836,6 @@ var require_package = __commonJS({
         commander: "^11.1.0",
         esbuild: "^0.19.10",
         koa: "^2.14.2",
-        "koa-better-http-proxy": "^0.2.10",
         "koa-static": "^5.0.0",
         portfinder: "^1.0.32"
       },
@@ -5379,7 +5378,7 @@ var require_src = __commonJS({
 // ../../node_modules/.pnpm/mkdirp@0.5.6/node_modules/mkdirp/index.js
 var require_mkdirp = __commonJS({
   "../../node_modules/.pnpm/mkdirp@0.5.6/node_modules/mkdirp/index.js"(exports2, module2) {
-    var path5 = require("path");
+    var path6 = require("path");
     var fs = require("fs");
     var _0777 = parseInt("0777", 8);
     module2.exports = mkdirP.mkdirp = mkdirP.mkdirP = mkdirP;
@@ -5400,7 +5399,7 @@ var require_mkdirp = __commonJS({
       var cb = f || /* istanbul ignore next */
       function() {
       };
-      p = path5.resolve(p);
+      p = path6.resolve(p);
       xfs.mkdir(p, mode, function(er) {
         if (!er) {
           made = made || p;
@@ -5408,9 +5407,9 @@ var require_mkdirp = __commonJS({
         }
         switch (er.code) {
           case "ENOENT":
-            if (path5.dirname(p) === p)
+            if (path6.dirname(p) === p)
               return cb(er);
-            mkdirP(path5.dirname(p), opts, function(er2, made2) {
+            mkdirP(path6.dirname(p), opts, function(er2, made2) {
               if (er2)
                 cb(er2, made2);
               else
@@ -5439,14 +5438,14 @@ var require_mkdirp = __commonJS({
       }
       if (!made)
         made = null;
-      p = path5.resolve(p);
+      p = path6.resolve(p);
       try {
         xfs.mkdirSync(p, mode);
         made = made || p;
       } catch (err0) {
         switch (err0.code) {
           case "ENOENT":
-            made = sync(path5.dirname(p), opts, made);
+            made = sync(path6.dirname(p), opts, made);
             sync(p, opts, made);
             break;
           default:
@@ -5473,7 +5472,7 @@ var require_portfinder = __commonJS({
     var fs = require("fs");
     var os = require("os");
     var net = require("net");
-    var path5 = require("path");
+    var path6 = require("path");
     var _async = require_async();
     var debug = require_src();
     var mkdirp = require_mkdirp().mkdirp;
@@ -5667,7 +5666,7 @@ var require_portfinder = __commonJS({
         });
       }
       function checkAndTestSocket() {
-        var dir = path5.dirname(options.path);
+        var dir = path6.dirname(options.path);
         fs.stat(dir, function(err, stats) {
           if (err || !stats.isDirectory()) {
             return createAndTestSocket(dir);
@@ -5682,12 +5681,12 @@ var require_portfinder = __commonJS({
       return port + 1;
     };
     exports2.nextSocket = function(socketPath) {
-      var dir = path5.dirname(socketPath), name = path5.basename(socketPath, ".sock"), match = name.match(/^([a-zA-z]+)(\d*)$/i), index = parseInt(match[2]), base = match[1];
+      var dir = path6.dirname(socketPath), name = path6.basename(socketPath, ".sock"), match = name.match(/^([a-zA-z]+)(\d*)$/i), index = parseInt(match[2]), base = match[1];
       if (isNaN(index)) {
         index = 0;
       }
       index += 1;
-      return path5.join(dir, base + index + ".sock");
+      return path6.join(dir, base + index + ".sock");
     };
     exports2._defaultHosts = function() {
       var interfaces = {};
@@ -15252,11 +15251,11 @@ var require_mime_types = __commonJS({
       }
       return exts[0];
     }
-    function lookup(path5) {
-      if (!path5 || typeof path5 !== "string") {
+    function lookup(path6) {
+      if (!path6 || typeof path6 !== "string") {
         return false;
       }
-      var extension2 = extname("x." + path5).toLowerCase().substr(1);
+      var extension2 = extname("x." + path6).toLowerCase().substr(1);
       if (!extension2) {
         return false;
       }
@@ -15812,7 +15811,7 @@ var require_statuses = __commonJS({
 var require_destroy = __commonJS({
   "../../node_modules/.pnpm/destroy@1.2.0/node_modules/destroy/index.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("events").EventEmitter;
+    var EventEmitter2 = require("events").EventEmitter;
     var ReadStream = require("fs").ReadStream;
     var Stream = require("stream");
     var Zlib = require("zlib");
@@ -15874,7 +15873,7 @@ var require_destroy = __commonJS({
       return stream instanceof Stream && typeof stream.destroy === "function";
     }
     function isEventEmitter(val) {
-      return val instanceof EventEmitter;
+      return val instanceof EventEmitter2;
     }
     function isFsReadStream(stream) {
       return stream instanceof ReadStream;
@@ -16616,7 +16615,7 @@ var require_event_listener_count = __commonJS({
 var require_compat = __commonJS({
   "../../node_modules/.pnpm/depd@1.1.2/node_modules/depd/lib/compat/index.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("events").EventEmitter;
+    var EventEmitter2 = require("events").EventEmitter;
     lazyProperty(module2.exports, "callSiteToString", function callSiteToString2() {
       var limit = Error.stackTraceLimit;
       var obj = {};
@@ -16633,7 +16632,7 @@ var require_compat = __commonJS({
       return stack2[0].toString ? toString : require_callsite_tostring();
     });
     lazyProperty(module2.exports, "eventListenerCount", function eventListenerCount2() {
-      return EventEmitter.listenerCount || require_event_listener_count();
+      return EventEmitter2.listenerCount || require_event_listener_count();
     });
     function lazyProperty(obj, prop, getter) {
       function get() {
@@ -19077,11 +19076,11 @@ var require_request = __commonJS({
        * @param {String} path
        * @api public
        */
-      set path(path5) {
+      set path(path6) {
         const url = parse(this.req);
-        if (url.pathname === path5)
+        if (url.pathname === path6)
           return;
-        url.pathname = path5;
+        url.pathname = path6;
         url.path = null;
         this.url = stringify(url);
       },
@@ -20247,12 +20246,12 @@ var require_http_errors2 = __commonJS({
 var require_path_is_absolute = __commonJS({
   "../../node_modules/.pnpm/path-is-absolute@1.0.1/node_modules/path-is-absolute/index.js"(exports2, module2) {
     "use strict";
-    function posix(path5) {
-      return path5.charAt(0) === "/";
+    function posix(path6) {
+      return path6.charAt(0) === "/";
     }
-    function win32(path5) {
+    function win32(path6) {
       var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
-      var result = splitDeviceRe.exec(path5);
+      var result = splitDeviceRe.exec(path6);
       var device = result[1] || "";
       var isUnc = Boolean(device && device.charAt(1) !== ":");
       return Boolean(result[2] || isUnc);
@@ -20276,10 +20275,10 @@ var require_resolve_path = __commonJS({
     module2.exports = resolvePath;
     var UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
     function resolvePath(rootPath, relativePath) {
-      var path5 = relativePath;
+      var path6 = relativePath;
       var root = rootPath;
       if (arguments.length === 1) {
-        path5 = rootPath;
+        path6 = rootPath;
         root = process.cwd();
       }
       if (root == null) {
@@ -20288,22 +20287,22 @@ var require_resolve_path = __commonJS({
       if (typeof root !== "string") {
         throw new TypeError("argument rootPath must be a string");
       }
-      if (path5 == null) {
+      if (path6 == null) {
         throw new TypeError("argument relativePath is required");
       }
-      if (typeof path5 !== "string") {
+      if (typeof path6 !== "string") {
         throw new TypeError("argument relativePath must be a string");
       }
-      if (path5.indexOf("\0") !== -1) {
+      if (path6.indexOf("\0") !== -1) {
         throw createError(400, "Malicious Path");
       }
-      if (pathIsAbsolute.posix(path5) || pathIsAbsolute.win32(path5)) {
+      if (pathIsAbsolute.posix(path6) || pathIsAbsolute.win32(path6)) {
         throw createError(400, "Malicious Path");
       }
-      if (UP_PATH_REGEXP.test(normalize("." + sep + path5))) {
+      if (UP_PATH_REGEXP.test(normalize("." + sep + path6))) {
         throw createError(403);
       }
-      return normalize(join(resolve(root), path5));
+      return normalize(join(resolve(root), path6));
     }
   }
 });
@@ -20319,9 +20318,9 @@ var require_koa_send = __commonJS({
     var assert = require("assert");
     var stat2 = util.promisify(fs.stat);
     var access = util.promisify(fs.access);
-    async function exists(path5) {
+    async function exists(path6) {
       try {
-        await access(path5);
+        await access(path6);
         return true;
       } catch (e) {
         return false;
@@ -20336,13 +20335,13 @@ var require_koa_send = __commonJS({
       sep
     } = require("path");
     module2.exports = send;
-    async function send(ctx, path5, opts = {}) {
+    async function send(ctx, path6, opts = {}) {
       assert(ctx, "koa context required");
-      assert(path5, "pathname required");
-      debug('send "%s" %j', path5, opts);
+      assert(path6, "pathname required");
+      debug('send "%s" %j', path6, opts);
       const root = opts.root ? normalize(resolve(opts.root)) : "";
-      const trailingSlash = path5[path5.length - 1] === "/";
-      path5 = path5.substr(parse(path5).root.length);
+      const trailingSlash = path6[path6.length - 1] === "/";
+      path6 = path6.substr(parse(path6).root.length);
       const index = opts.index;
       const maxage = opts.maxage || opts.maxAge || 0;
       const immutable = opts.immutable || false;
@@ -20355,27 +20354,27 @@ var require_koa_send = __commonJS({
       if (setHeaders && typeof setHeaders !== "function") {
         throw new TypeError("option setHeaders must be function");
       }
-      path5 = decode(path5);
-      if (path5 === -1)
+      path6 = decode(path6);
+      if (path6 === -1)
         return ctx.throw(400, "failed to decode");
       if (index && trailingSlash)
-        path5 += index;
-      path5 = resolvePath(root, path5);
-      if (!hidden && isHidden(root, path5))
+        path6 += index;
+      path6 = resolvePath(root, path6);
+      if (!hidden && isHidden(root, path6))
         return;
       let encodingExt = "";
-      if (ctx.acceptsEncodings("br", "identity") === "br" && brotli && await exists(path5 + ".br")) {
-        path5 = path5 + ".br";
+      if (ctx.acceptsEncodings("br", "identity") === "br" && brotli && await exists(path6 + ".br")) {
+        path6 = path6 + ".br";
         ctx.set("Content-Encoding", "br");
         ctx.res.removeHeader("Content-Length");
         encodingExt = ".br";
-      } else if (ctx.acceptsEncodings("gzip", "identity") === "gzip" && gzip && await exists(path5 + ".gz")) {
-        path5 = path5 + ".gz";
+      } else if (ctx.acceptsEncodings("gzip", "identity") === "gzip" && gzip && await exists(path6 + ".gz")) {
+        path6 = path6 + ".gz";
         ctx.set("Content-Encoding", "gzip");
         ctx.res.removeHeader("Content-Length");
         encodingExt = ".gz";
       }
-      if (extensions && !/\./.exec(basename(path5))) {
+      if (extensions && !/\./.exec(basename(path6))) {
         const list = [].concat(extensions);
         for (let i = 0; i < list.length; i++) {
           let ext = list[i];
@@ -20384,19 +20383,19 @@ var require_koa_send = __commonJS({
           }
           if (!/^\./.exec(ext))
             ext = `.${ext}`;
-          if (await exists(`${path5}${ext}`)) {
-            path5 = `${path5}${ext}`;
+          if (await exists(`${path6}${ext}`)) {
+            path6 = `${path6}${ext}`;
             break;
           }
         }
       }
       let stats;
       try {
-        stats = await stat2(path5);
+        stats = await stat2(path6);
         if (stats.isDirectory()) {
           if (format && index) {
-            path5 += `/${index}`;
-            stats = await stat2(path5);
+            path6 += `/${index}`;
+            stats = await stat2(path6);
           } else {
             return;
           }
@@ -20410,7 +20409,7 @@ var require_koa_send = __commonJS({
         throw err;
       }
       if (setHeaders)
-        setHeaders(ctx.res, path5, stats);
+        setHeaders(ctx.res, path6, stats);
       ctx.set("Content-Length", stats.size);
       if (!ctx.response.get("Last-Modified"))
         ctx.set("Last-Modified", stats.mtime.toUTCString());
@@ -20422,14 +20421,14 @@ var require_koa_send = __commonJS({
         ctx.set("Cache-Control", directives.join(","));
       }
       if (!ctx.type)
-        ctx.type = type(path5, encodingExt);
-      ctx.body = fs.createReadStream(path5);
-      return path5;
+        ctx.type = type(path6, encodingExt);
+      ctx.body = fs.createReadStream(path6);
+      return path6;
     }
-    function isHidden(root, path5) {
-      path5 = path5.substr(root.length).split(sep);
-      for (let i = 0; i < path5.length; i++) {
-        if (path5[i][0] === ".")
+    function isHidden(root, path6) {
+      path6 = path6.substr(root.length).split(sep);
+      for (let i = 0; i < path6.length; i++) {
+        if (path6[i][0] === ".")
           return true;
       }
       return false;
@@ -20437,9 +20436,9 @@ var require_koa_send = __commonJS({
     function type(file, ext) {
       return ext !== "" ? extname(basename(file, ext)) : extname(file);
     }
-    function decode(path5) {
+    function decode(path6) {
       try {
-        return decodeURIComponent(path5);
+        return decodeURIComponent(path6);
       } catch (err) {
         return -1;
       }
@@ -20522,27 +20521,42 @@ var {
   Help
 } = import_index.default;
 
-// src/node/constants.ts
+// src/node/constants/paths.ts
 var DEFAULT_OUTPUT_PATH = "dist";
 var DEFAULT_ENTRY_PATH = "./emi.tsx";
-var DEFAULT_TEMPORARY_PATH = "./.emi";
+var DEFAULT_TEMPORARY_PATH = ".emi";
 var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
-var DEFAULT_DEV_HOST = "127.0.0.1";
+var DEFAULT_CONFIG_PATH = "emi.config.ts";
+var DEFAULT_ESBUILD_SERVE_PATH = ".esbuild";
+
+// src/node/constants/ports.ts
 var DEFAULT_DEV_PORT = 2222;
-var DEFAULT_ESBUILD_PORT = 3333;
+var DEFAULT_ESBUILD_INDEX_PORT = 2223;
+var DEFAULT_ESBUILD_CONFIG_PORT = 2224;
+
+// src/node/constants/hosts.ts
+var DEFAULT_DEV_HOST = "127.0.0.1";
+
+// src/node/constants/events.ts
+var CONFIG_REBUILD_EVENT = "config_rebuild";
 
 // src/node/appData.ts
 var import_path = __toESM(require("path"));
-var import_package = __toESM(require_package());
 function getAppData({ cwd }) {
   return new Promise((resolve, reject) => {
     const absSrcPath = import_path.default.join(cwd, "src");
     const absNodeModulesPath = import_path.default.join(cwd, "node_modules");
     const absOutputPath = import_path.default.join(cwd, DEFAULT_OUTPUT_PATH);
     const absLayoutPath = import_path.default.join(cwd, DEFAULT_LAYOUT_PATH);
+    const absConfigPath = import_path.default.join(cwd, DEFAULT_CONFIG_PATH);
     const absPagesPath = import_path.default.join(absSrcPath, "pages");
     const absTempPath = import_path.default.join(absNodeModulesPath, DEFAULT_TEMPORARY_PATH);
     const absEntryPath = import_path.default.join(absTempPath, DEFAULT_ENTRY_PATH);
+    const absEsbuildServePath = import_path.default.join(
+      absTempPath,
+      DEFAULT_ESBUILD_SERVE_PATH
+    );
+    const absHtmlPath = import_path.default.join(absTempPath, "index.html");
     const paths = {
       cwd,
       absSrcPath,
@@ -20551,23 +20565,28 @@ function getAppData({ cwd }) {
       absOutputPath,
       absEntryPath,
       absNodeModulesPath,
-      absLayoutPath
+      absLayoutPath,
+      absConfigPath,
+      absEsbuildServePath,
+      absHtmlPath
     };
-    resolve({ paths, pkg: import_package.default });
+    resolve({ paths, pkg: require_package() });
   });
 }
 
 // src/node/utils.ts
+var import_events = __toESM(require("events"));
 var import_portfinder = __toESM(require_portfinder());
 async function findPort(port) {
   try {
     const newPort = await import_portfinder.default.getPortPromise({ port });
     return newPort;
   } catch (e) {
-    console.log("\u65E0\u53EF\u7528\u7AEF\u53E3", e);
+    console.error("\u65E0\u53EF\u7528\u7AEF\u53E3", e);
     process.exit(1);
   }
 }
+var EmiEmitter = new import_events.default();
 
 // ../../node_modules/.pnpm/koa@2.14.2/node_modules/koa/dist/koa.mjs
 var import_application = __toESM(require_application(), 1);
@@ -20575,19 +20594,247 @@ var koa_default = import_application.default;
 var HttpError = import_application.default.HttpError;
 
 // src/node/cli/commands/dev/server.ts
-var import_esbuild = require("esbuild");
 var import_koa_static = __toESM(require_koa_static());
 var import_http = __toESM(require("http"));
+var import_path3 = __toESM(require("path"));
+
+// src/node/esbuildServe.ts
+var import_esbuild = require("esbuild");
+var import_path2 = __toESM(require("path"));
+async function esbuildServe({
+  platform,
+  outfileName,
+  entry,
+  port,
+  appData,
+  plugins
+}) {
+  const ctx = await (0, import_esbuild.context)({
+    platform,
+    outfile: import_path2.default.join(appData.paths.absEsbuildServePath, outfileName),
+    bundle: true,
+    define: {
+      "process.env.NODE_ENV": JSON.stringify("development")
+    },
+    entryPoints: [entry],
+    tsconfig: import_path2.default.join(appData.paths.cwd, "tsconfig.json"),
+    plugins
+  });
+  await ctx.watch();
+  const serveRes = await ctx.serve({
+    servedir: appData.paths.absEsbuildServePath,
+    host: DEFAULT_DEV_HOST,
+    port,
+    onRequest: (args2) => {
+      console.log(`${args2.method}: ${args2.path} ${args2.timeInMS} ms`);
+    }
+  });
+  process.on("SIGINT", () => {
+    ctx.dispose();
+    process.exit(0);
+  });
+  process.on("SIGTERM", () => {
+    ctx.dispose();
+    process.exit(0);
+  });
+  return serveRes;
+}
+
+// src/node/plugins/esbuildRebuildPlugin.ts
+var esbuildRebuildPlugin = {
+  name: "esbuildRebuildPlugin",
+  setup({ onEnd }) {
+    onEnd(() => {
+      EmiEmitter.emit(CONFIG_REBUILD_EVENT);
+    });
+  }
+};
+
+// src/node/cli/commands/dev/server.ts
+async function createEmiServer({
+  koaPort,
+  appData,
+  esbuildIndexPort,
+  esbuildConfigPort
+}) {
+  await esbuildServe({
+    platform: "browser",
+    outfileName: "index.js",
+    entry: appData.paths.absEntryPath,
+    port: esbuildIndexPort,
+    appData
+  });
+  await esbuildServe({
+    platform: "node",
+    outfileName: "config.js",
+    entry: appData.paths.absConfigPath,
+    port: esbuildConfigPort,
+    appData,
+    plugins: [esbuildRebuildPlugin]
+  });
+  await devKoaServer({
+    port: koaPort,
+    esbuildIndexPort,
+    esbuildConfigPort,
+    appData
+  });
+}
+async function devKoaServer({
+  port,
+  esbuildIndexPort,
+  esbuildConfigPort,
+  appData
+}) {
+  const app = new koa_default();
+  app.use((0, import_koa_static.default)(import_path3.default.join(appData.paths.absTempPath)));
+  app.use((0, import_koa_static.default)(import_path3.default.join(__dirname, "../")));
+  app.use(async (ctx, next) => {
+    console.log("\u8BF7\u6C42\u8DEF\u5F84\uFF1A", ctx.url);
+    if (ctx.url.includes("favicon")) {
+      ctx.body = "";
+    } else {
+      await next();
+    }
+  });
+  app.use(async (ctx) => {
+    const proxyEsbuldServe = async (options) => {
+      await new Promise((resolve, reject) => {
+        const proxyReq = import_http.default.request(options, (proxyRes) => {
+          ctx.status = proxyRes.statusCode ?? 200;
+          ctx.set(proxyRes.headers);
+          proxyRes.pipe(ctx.res);
+          proxyRes.on("end", () => {
+            resolve("end");
+          });
+        });
+        ctx.req.pipe(proxyReq);
+        proxyReq.on("error", () => {
+          console.error("koa\u4EE3\u7406esbuild\u51FA\u9519");
+          reject();
+        });
+      });
+    };
+    const indexUrls = ["/esbuildIndex", "/index.js", "index.css"];
+    if (indexUrls.some((url) => ctx.url.includes(url))) {
+      const path6 = ctx.url === "/esbuildIndex" ? "/esbuild" : ctx.url;
+      await proxyEsbuldServe({
+        hostname: DEFAULT_DEV_HOST,
+        port: esbuildIndexPort,
+        path: path6,
+        method: ctx.req.method,
+        headers: ctx.req.headers
+      });
+    }
+    if (ctx.url === "/esbuildConfig") {
+      await proxyEsbuldServe({
+        hostname: DEFAULT_DEV_HOST,
+        port: esbuildConfigPort,
+        path: "/esbuild",
+        method: ctx.req.method,
+        headers: ctx.req.headers
+      });
+    }
+  });
+  return new Promise((resolve) => {
+    const server = app.listen(port, async () => {
+      console.log(`App listening at http://${DEFAULT_DEV_HOST}:${port}`);
+      resolve(port);
+    });
+    process.on("SIGINT", () => {
+      server.close();
+      process.exit(0);
+    });
+    process.on("SIGTERM", () => {
+      server.close();
+      process.exit(0);
+    });
+  });
+}
+
+// src/node/config.ts
 var import_path4 = __toESM(require("path"));
+var import_fs = require("fs");
+async function getUserConfig({
+  appData
+}) {
+  const buildedConfigPath = import_path4.default.join(
+    appData.paths.absEsbuildServePath,
+    "config.js"
+  );
+  try {
+    if ((0, import_fs.existsSync)(buildedConfigPath)) {
+      const config = require(buildedConfigPath).default;
+      delete require.cache[buildedConfigPath];
+      return config;
+    } else {
+      return {};
+    }
+  } catch (e) {
+    console.error("\u914D\u7F6E\u6587\u4EF6\u8BFB\u53D6\u9519\u8BEF", e);
+    process.exit(1);
+  }
+}
+
+// src/node/routes.ts
+var import_path5 = __toESM(require("path"));
+var import_fs2 = require("fs");
+var import_promises = require("fs/promises");
+async function getRoutes({
+  appData
+}) {
+  return new Promise(async (resolve, reject) => {
+    const files = await getFiles(appData.paths.absPagesPath);
+    const routes = filesToRoutes(files, appData.paths.absPagesPath);
+    const absLayoutPath = appData.paths.absLayoutPath;
+    if ((0, import_fs2.existsSync)(absLayoutPath)) {
+      resolve([
+        {
+          path: "/",
+          element: absLayoutPath.replace(import_path5.default.extname(absLayoutPath), ""),
+          routes
+        }
+      ]);
+    } else {
+      resolve(routes);
+    }
+  });
+}
+async function getFiles(root) {
+  if (!(0, import_fs2.existsSync)(root))
+    return [];
+  const files = await (0, import_promises.readdir)(root);
+  const stats = await Promise.all(
+    files.map((file) => {
+      const absFilePath = import_path5.default.join(root, file);
+      return (0, import_promises.stat)(absFilePath);
+    })
+  );
+  return files.filter((file, index) => {
+    const isFile = stats[index].isFile();
+    return isFile && /\.tsx?$/.test(file);
+  });
+}
+function filesToRoutes(files, pagesPath) {
+  return files.map((i) => {
+    let pagePath = import_path5.default.basename(i, import_path5.default.extname(i));
+    const element = import_path5.default.resolve(pagesPath, pagePath);
+    if (pagePath === "hello")
+      pagePath = "";
+    return {
+      path: `/${pagePath}`,
+      element
+    };
+  });
+}
 
 // src/node/cli/commands/dev/generate.ts
-var import_fs = require("fs");
-var import_promises = require("fs/promises");
-var import_path2 = __toESM(require("path"));
+var import_fs3 = require("fs");
+var import_promises2 = require("fs/promises");
 var count = 0;
 async function generateIndex({
   appData,
-  routes
+  routes,
+  userConfig
 }) {
   const getRouteStr = (routes2) => {
     let routeStr2 = "";
@@ -20619,7 +20866,10 @@ async function generateIndex({
 
   const App = () => {
     return (
-      <KeepAliveLayout keepalivePaths={['/']}>
+      <KeepAliveLayout keepalivePaths={[${// 模板字符串会吞掉数组和字符串，所以在外面套[]，在字符串值外面套''
+  userConfig.keepalive?.map(
+    (i) => typeof i === "string" ? `'${i}'` : i
+  ) || []}]}>
         <BrowserRouter>
           <Routes>
             ${routeStr}
@@ -20634,17 +20884,17 @@ async function generateIndex({
   root.render(createElement(App))
   `;
   try {
-    if (!(0, import_fs.existsSync)(appData.paths.absTempPath)) {
-      await (0, import_promises.mkdir)(appData.paths.absTempPath);
+    if (!(0, import_fs3.existsSync)(appData.paths.absTempPath)) {
+      await (0, import_promises2.mkdir)(appData.paths.absTempPath);
     }
-    await (0, import_promises.writeFile)(appData.paths.absEntryPath, content, "utf-8");
+    await (0, import_promises2.writeFile)(appData.paths.absEntryPath, content, "utf-8");
   } catch (e) {
     console.error("\u751F\u6210index\u5931\u8D25", e);
   }
 }
 async function generateHtml({
   appData,
-  esbuildPort
+  userConfig
 }) {
   const content = `
     <!DOCTYPE html>
@@ -20652,8 +20902,8 @@ async function generateHtml({
     
     <head>
         <meta charset="UTF-8">
-        <title>${appData.pkg.name || "Emi"}</title>
-        <link rel="stylesheet" href="http://${DEFAULT_DEV_HOST}:${esbuildPort}/index.css"></link>
+        <title>${userConfig.title || appData.pkg.name || "Emi"}</title>
+        <link rel="stylesheet" href="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.css"></link>
     </head>
     
     <body>
@@ -20661,166 +20911,20 @@ async function generateHtml({
             <span>loading...</span>
         </div>
 
-        <script src="http://${DEFAULT_DEV_HOST}:${esbuildPort}/index.js"></script>
+        <script src="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.js"></script>
         <script src="/client/hot-reloading.js"></script>
     </body>
     </html>
     `;
   try {
-    if (!(0, import_fs.existsSync)(appData.paths.absTempPath)) {
-      await (0, import_promises.mkdir)(appData.paths.absTempPath);
+    if (!(0, import_fs3.existsSync)(appData.paths.absTempPath)) {
+      await (0, import_promises2.mkdir)(appData.paths.absTempPath);
     }
-    await (0, import_promises.writeFile)(
-      import_path2.default.join(appData.paths.absOutputPath, "index.html"),
-      content,
-      "utf-8"
-    );
+    await (0, import_promises2.writeFile)(appData.paths.absHtmlPath, content, "utf-8");
   } catch (e) {
     console.error("\u751F\u6210html\u5931\u8D25", e);
   }
   return content;
-}
-
-// src/node/routes.ts
-var import_path3 = __toESM(require("path"));
-var import_fs2 = require("fs");
-var import_promises2 = require("fs/promises");
-async function getRoutes({
-  appData
-}) {
-  return new Promise(async (resolve, reject) => {
-    const files = await getFiles(appData.paths.absPagesPath);
-    const routes = filesToRoutes(files, appData.paths.absPagesPath);
-    const absLayoutPath = appData.paths.absLayoutPath;
-    if ((0, import_fs2.existsSync)(absLayoutPath)) {
-      resolve([
-        {
-          path: "/",
-          element: absLayoutPath.replace(import_path3.default.extname(absLayoutPath), ""),
-          routes
-        }
-      ]);
-    } else {
-      resolve(routes);
-    }
-  });
-}
-async function getFiles(root) {
-  if (!(0, import_fs2.existsSync)(root))
-    return [];
-  const files = await (0, import_promises2.readdir)(root);
-  const stats = await Promise.all(
-    files.map((file) => {
-      const absFilePath = import_path3.default.join(root, file);
-      return (0, import_promises2.stat)(absFilePath);
-    })
-  );
-  return files.filter((file, index) => {
-    const isFile = stats[index].isFile();
-    return isFile && /\.tsx?$/.test(file);
-  });
-}
-function filesToRoutes(files, pagesPath) {
-  return files.map((i) => {
-    let pagePath = import_path3.default.basename(i, import_path3.default.extname(i));
-    const element = import_path3.default.resolve(pagesPath, pagePath);
-    if (pagePath === "hello")
-      pagePath = "";
-    return {
-      path: `/${pagePath}`,
-      element
-    };
-  });
-}
-
-// src/node/cli/commands/dev/server.ts
-async function createEmiServer({
-  koaPort,
-  esbuildPort,
-  appData
-}) {
-  const routes = await getRoutes({ appData });
-  await generateIndex({ appData, routes });
-  const html = await generateHtml({ appData, esbuildPort });
-  await devESBuildServe({ esbuildPort, appData });
-  await devKoaServe({ koaPort, esbuildPort, html });
-}
-async function devESBuildServe({
-  esbuildPort,
-  appData
-}) {
-  const esbuildServePath = import_path4.default.join(appData.paths.absTempPath, ".esbuild");
-  const ctx = await (0, import_esbuild.context)({
-    platform: "browser",
-    outdir: esbuildServePath,
-    entryNames: "index",
-    bundle: true,
-    define: {
-      "process.env.NODE_ENV": JSON.stringify("development")
-    },
-    entryPoints: [appData.paths.absEntryPath],
-    tsconfig: import_path4.default.join(appData.paths.cwd, "tsconfig.json")
-  });
-  await ctx.watch();
-  await ctx.serve({
-    servedir: esbuildServePath,
-    host: DEFAULT_DEV_HOST,
-    port: esbuildPort,
-    onRequest: (args2) => {
-      console.log(`${args2.method}: ${args2.path} ${args2.timeInMS} ms`);
-    }
-  });
-  process.on("SIGINT", () => {
-    ctx.dispose();
-    process.exit(0);
-  });
-  process.on("SIGTERM", () => {
-    ctx.dispose();
-    process.exit(0);
-  });
-}
-async function devKoaServe({
-  koaPort,
-  esbuildPort,
-  html
-}) {
-  const app = new koa_default();
-  app.use((0, import_koa_static.default)(import_path4.default.join(__dirname, "../")));
-  app.use(async (ctx, next) => {
-    if (ctx.url === "/") {
-      ctx.set("Content-Type", "text/html");
-      ctx.body = html;
-    } else if (ctx.url.includes("favicon")) {
-      ctx.body = "";
-    } else {
-      await next();
-    }
-  });
-  app.use(async (ctx) => {
-    const options = {
-      hostname: DEFAULT_DEV_HOST,
-      port: esbuildPort,
-      path: ctx.req.url,
-      method: ctx.req.method,
-      headers: ctx.req.headers
-    };
-    await new Promise((resolve, reject) => {
-      const proxyReq = import_http.default.request(options, (proxyRes) => {
-        ctx.status = proxyRes.statusCode ?? 200;
-        ctx.set(proxyRes.headers);
-        ctx.body = proxyRes;
-        resolve("success");
-      });
-      proxyReq.on("error", reject);
-      ctx.req.pipe(proxyReq);
-    });
-  });
-  return new Promise((resolve) => {
-    app.listen(koaPort, async () => {
-      console.log(`App listening at http://${DEFAULT_DEV_HOST}:${koaPort}`);
-      resolve(koaPort);
-    });
-  });
 }
 
 // src/node/cli/commands/dev/index.ts
@@ -20829,19 +20933,33 @@ dev.option("-p,--port <value>", "log it", DEFAULT_DEV_PORT.toString()).action(as
   const port = options.port;
   const cwd = process.cwd();
   const koaPort = await findPort(parseInt(port));
-  const esbuildPort = await findPort(DEFAULT_ESBUILD_PORT);
+  const esbuildIndexPort = await findPort(DEFAULT_ESBUILD_INDEX_PORT);
+  const esbuildConfigPort = await findPort(DEFAULT_ESBUILD_CONFIG_PORT);
   const appData = await getAppData({ cwd });
+  EmiEmitter.on(CONFIG_REBUILD_EVENT, async () => {
+    await buildWithUserConfig({
+      appData
+    });
+  });
   try {
     createEmiServer({
       koaPort,
-      esbuildPort,
-      appData
+      appData,
+      esbuildConfigPort,
+      esbuildIndexPort
     });
   } catch (e) {
     console.log("\u670D\u52A1\u5F00\u542F\u5931\u8D25", e);
     process.exit(1);
   }
 });
+async function buildWithUserConfig({ appData }) {
+  const userConfig = await getUserConfig({ appData });
+  console.log("\u7528\u6237\u914D\u7F6E\uFF1A", userConfig);
+  const routes = await getRoutes({ appData });
+  await generateIndex({ appData, routes, userConfig });
+  await generateHtml({ appData, userConfig });
+}
 
 // src/node/cli/cli.ts
 var cli = program;
