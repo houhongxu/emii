@@ -36,7 +36,7 @@ var require_package = __commonJS({
     module2.exports = {
       name: "emi",
       version: "0.0.1",
-      description: "",
+      description: "lightweight react framework based on esbuild",
       main: "./lib/node/cli.js",
       bin: "./bin/emi.js",
       files: [
@@ -55,7 +55,9 @@ var require_package = __commonJS({
       dependencies: {
         commander: "^11.1.0",
         esbuild: "^0.19.10",
+        "http-terminator": "^3.2.0",
         koa: "^2.14.2",
+        "koa-proxies": "^0.12.4",
         "koa-static": "^5.0.0",
         portfinder: "^1.0.32"
       },

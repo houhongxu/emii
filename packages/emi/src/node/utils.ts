@@ -1,5 +1,6 @@
 import EventEmitter from 'events'
 import portfinder from 'portfinder'
+import http from 'http'
 
 /**
  * 查找可用端口
@@ -19,3 +20,10 @@ export async function findPort(port: number) {
  * 事件系统
  */
 export const EmiEmitter = new EventEmitter()
+
+/**
+ * 全局
+ */
+export const EmiGlobal: typeof global & {
+  EmiDevServer?: http.Server
+} = global

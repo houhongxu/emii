@@ -6,12 +6,16 @@ import {
   DEFAULT_ESBUILD_INDEX_PORT,
 } from '../../../constants'
 import { getAppData } from '../../../appData'
-import { EmiEmitter, findPort } from '../../../utils'
-import { createEmiServer } from './server'
+import { EmiEmitter, EmiGlobal, findPort } from '../../../utils'
+import { createDevKoaApp, esbuildServe, logListenInfo } from './server'
 import { getUserConfig } from '../../../config'
 import { getRoutes } from '../../../routes'
 import { generateHtml, generateIndex } from './generate'
-import { IAppData, IRoute } from '../../../types'
+import { IAppData } from '../../../types'
+import http from 'http'
+import proxy from 'koa-proxies'
+import { esbuildRebuildPlugin } from '../../../plugins'
+import { createHttpTerminator } from 'http-terminator'
 
 export const dev = new Command('dev')
 
@@ -29,19 +33,50 @@ dev
     // 获取全局数据
     const appData = await getAppData({ cwd })
 
-    // 配置文件更新后重新构建
-    EmiEmitter.on(CONFIG_REBUILD_EVENT, async () => {
-      await buildWithUserConfig({
+    try {
+      // 通过koa提供的dev服务，koa转发esbuild的服务提供index与config文件的sse事件伪热更新
+
+      // 开启esbuild的入口服务给koa
+      await esbuildServe({
+        platform: 'browser',
+        outfileName: 'index.js',
+        entry: appData.paths.absEntryPath,
+        port: esbuildIndexPort,
         appData,
       })
-    })
 
-    try {
-      createEmiServer({
-        koaPort,
+      // 开启esbuild的配置文件服务给koa
+      await esbuildServe({
+        platform: 'node',
+        outfileName: 'config.js',
+        entry: appData.paths.absConfigPath,
+        port: esbuildConfigPort,
         appData,
-        esbuildConfigPort,
+        plugins: [esbuildRebuildPlugin],
+      })
+
+      // 开启koa的服务给浏览器，使用html，拼接esbuild打包的js的script，返回给浏览器
+      let server = await devWithUserConfig({
+        appData,
+        koaPort,
         esbuildIndexPort,
+        esbuildConfigPort,
+      })
+
+      // 配置文件更新后重新构建，根据配置情况重启dev服务
+      EmiEmitter.on(CONFIG_REBUILD_EVENT, async () => {
+        // 如果是重新构建，则使用全局保存的上一次服务
+        server = EmiGlobal.EmiDevServer ?? server
+
+        const nextServer = await devWithUserConfig({
+          appData,
+          server,
+          koaPort,
+          esbuildConfigPort,
+          esbuildIndexPort,
+        })
+
+        EmiGlobal.EmiDevServer = nextServer
       })
     } catch (e) {
       console.log('服务开启失败', e)
@@ -49,7 +84,22 @@ dev
     }
   })
 
-async function buildWithUserConfig({ appData }: { appData: IAppData }) {
+/**
+ * 用户配置相关的dev服务
+ */
+async function devWithUserConfig({
+  appData,
+  server,
+  koaPort,
+  esbuildConfigPort,
+  esbuildIndexPort,
+}: {
+  appData: IAppData
+  server?: http.Server
+  koaPort: number
+  esbuildConfigPort: number
+  esbuildIndexPort: number
+}) {
   // 获取用户配置
   const userConfig = await getUserConfig({ appData })
   console.log('用户配置：', userConfig)
@@ -62,4 +112,35 @@ async function buildWithUserConfig({ appData }: { appData: IAppData }) {
 
   // 生成入口html
   await generateHtml({ appData, userConfig })
+
+  // 创建koa app
+  const app = createDevKoaApp({
+    esbuildIndexPort,
+    esbuildConfigPort,
+    appData,
+  })
+
+  // 有代理则添加中间件
+  const proxyConfig = userConfig.proxy
+  if (proxyConfig) {
+    // 有服务则先终止上一次服务
+    if (server) {
+      const httpTerminator = createHttpTerminator({ server })
+
+      // close会延迟koa终止服务等待链接都关闭，立刻终止koa服务见https://github.com/koajs/koa/issues/659，httpTerminator为类似库
+      await httpTerminator.terminate()
+    }
+
+    // 添加代理中间件
+    Object.entries(proxyConfig).forEach(([path, options]) => {
+      app.use(proxy(path, options))
+    })
+  }
+
+  // 开启koa服务
+  const nextServer = app.listen(koaPort, () => {
+    logListenInfo(koaPort)
+  })
+
+  return nextServer
 }

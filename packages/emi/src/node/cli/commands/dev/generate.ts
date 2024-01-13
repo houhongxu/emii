@@ -114,7 +114,7 @@ export async function generateHtml({
         </div>
 
         <script src="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.js"></script>
-        <script src="/client/hot-reloading.js"></script>
+        <script src="/hot-reloading.js"></script>
     </body>
     </html>
     `

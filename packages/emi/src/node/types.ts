@@ -1,3 +1,5 @@
+import { IKoaProxiesOptions } from 'koa-proxies'
+
 export type INoop = () => void
 
 export interface IAppData {
@@ -69,4 +71,5 @@ export interface IRoute {
 export interface IUserConfig {
   title?: string
   keepalive?: (string | RegExp)[]
+  proxy?: { [key: string]: IKoaProxiesOptions }
 }

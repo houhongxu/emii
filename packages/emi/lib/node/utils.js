@@ -2899,6 +2899,7 @@ var require_portfinder = __commonJS({
 var utils_exports = {};
 __export(utils_exports, {
   EmiEmitter: () => EmiEmitter,
+  EmiGlobal: () => EmiGlobal,
   findPort: () => findPort
 });
 module.exports = __toCommonJS(utils_exports);
@@ -2914,8 +2915,10 @@ async function findPort(port) {
   }
 }
 var EmiEmitter = new import_events.default();
+var EmiGlobal = global;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   EmiEmitter,
+  EmiGlobal,
   findPort
 });

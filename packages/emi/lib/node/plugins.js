@@ -2906,6 +2906,7 @@ module.exports = __toCommonJS(plugins_exports);
 var import_events = __toESM(require("events"));
 var import_portfinder = __toESM(require_portfinder());
 var EmiEmitter = new import_events.default();
+var EmiGlobal = global;
 
 // src/node/constants/events.ts
 var CONFIG_REBUILD_EVENT = "config_rebuild";
