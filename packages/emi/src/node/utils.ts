@@ -27,3 +27,10 @@ export const EmiEmitter = new EventEmitter()
 export const EmiGlobal: typeof global & {
   EmiDevServer?: http.Server
 } = global
+
+/**
+ *
+ */
+export function isEmptyObject(obj: object) {
+  return Object.keys(obj).length === 0
+}

@@ -4,6 +4,7 @@ import {
   DEFAULT_ENTRY_PATH,
   DEFAULT_ESBUILD_SERVE_PATH,
   DEFAULT_LAYOUT_PATH,
+  DEFAULT_MOCK_PATH,
   DEFAULT_OUTPUT_PATH,
   DEFAULT_TEMPORARY_PATH,
 } from './constants'
@@ -23,6 +24,7 @@ export function getAppData({ cwd }: IOptions): Promise<IAppData> {
     const absOutputPath = path.join(cwd, DEFAULT_OUTPUT_PATH)
     const absLayoutPath = path.join(cwd, DEFAULT_LAYOUT_PATH)
     const absConfigPath = path.join(cwd, DEFAULT_CONFIG_PATH)
+    const absMockPath = path.join(cwd, DEFAULT_MOCK_PATH)
 
     const absPagesPath = path.join(absSrcPath, 'pages')
     const absTempPath = path.join(absNodeModulesPath, DEFAULT_TEMPORARY_PATH)
@@ -45,6 +47,7 @@ export function getAppData({ cwd }: IOptions): Promise<IAppData> {
       absConfigPath,
       absEsbuildServePath,
       absHtmlPath,
+      absMockPath,
     }
 
     resolve({ paths, pkg: require('../../package.json') })

@@ -1,0 +1,20 @@
+{
+  "name": "http-destroy",
+  "version": "0.0.1",
+  "description": "destroy all sockets immediately",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "./lib"
+  ],
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "pnpm build --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  }
+}

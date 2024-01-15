@@ -16,7 +16,7 @@ export async function getUserConfig({
     if (existsSync(buildedConfigPath)) {
       const config = require(buildedConfigPath).default as IUserConfig
 
-      // ! 确保buildedConfigPath不会被其他模块require，否则会内存泄漏
+      // ! 删除缓存需要确保path不会被其他模块require，否则会内存泄漏
       delete require.cache[buildedConfigPath]
 
       return config

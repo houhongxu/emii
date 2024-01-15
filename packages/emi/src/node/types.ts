@@ -1,3 +1,4 @@
+import { Context } from 'koa'
 import { IKoaProxiesOptions } from 'koa-proxies'
 
 export type INoop = () => void
@@ -58,6 +59,11 @@ export interface IAppData {
      * esbuild serve路径
      */
     absEsbuildServePath: string
+
+    /**
+     * mock路径
+     */
+    absMockPath: string
   }
   pkg: any
 }
@@ -73,3 +79,8 @@ export interface IUserConfig {
   keepalive?: (string | RegExp)[]
   proxy?: { [key: string]: IKoaProxiesOptions }
 }
+
+export type IMockType = Record<
+  string,
+  string | Array<any> | object | ((ctx: Context) => void)
+>

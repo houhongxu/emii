@@ -55,14 +55,18 @@ var require_package = __commonJS({
       dependencies: {
         commander: "^11.1.0",
         esbuild: "^0.19.10",
+        glob: "^10.3.10",
         "http-terminator": "^3.2.0",
         koa: "^2.14.2",
+        "koa-bodyparser": "^4.4.1",
         "koa-proxies": "^0.12.4",
         "koa-static": "^5.0.0",
-        portfinder: "^1.0.32"
+        portfinder: "^1.0.32",
+        "http-destroy": "workspace:*"
       },
       devDependencies: {
         "@types/koa": "^2.13.12",
+        "@types/koa-bodyparser": "^4.3.12",
         "@types/koa-static": "~4.0.4",
         "@types/node": "^20.10.5"
       }
@@ -83,8 +87,9 @@ var DEFAULT_OUTPUT_PATH = "dist";
 var DEFAULT_ENTRY_PATH = "./emi.tsx";
 var DEFAULT_TEMPORARY_PATH = ".emi";
 var DEFAULT_LAYOUT_PATH = "./src/layouts/index.tsx";
-var DEFAULT_CONFIG_PATH = "emi.config.ts";
+var DEFAULT_CONFIG_PATH = "./emi.config.ts";
 var DEFAULT_ESBUILD_SERVE_PATH = ".esbuild";
+var DEFAULT_MOCK_PATH = "mock";
 
 // src/node/appData.ts
 function getAppData({ cwd }) {
@@ -94,6 +99,7 @@ function getAppData({ cwd }) {
     const absOutputPath = import_path.default.join(cwd, DEFAULT_OUTPUT_PATH);
     const absLayoutPath = import_path.default.join(cwd, DEFAULT_LAYOUT_PATH);
     const absConfigPath = import_path.default.join(cwd, DEFAULT_CONFIG_PATH);
+    const absMockPath = import_path.default.join(cwd, DEFAULT_MOCK_PATH);
     const absPagesPath = import_path.default.join(absSrcPath, "pages");
     const absTempPath = import_path.default.join(absNodeModulesPath, DEFAULT_TEMPORARY_PATH);
     const absEntryPath = import_path.default.join(absTempPath, DEFAULT_ENTRY_PATH);
@@ -113,7 +119,8 @@ function getAppData({ cwd }) {
       absLayoutPath,
       absConfigPath,
       absEsbuildServePath,
-      absHtmlPath
+      absHtmlPath,
+      absMockPath
     };
     resolve({ paths, pkg: require_package() });
   });

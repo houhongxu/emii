@@ -23,9 +23,14 @@ export const DEFAULT_LAYOUT_PATH = './src/layouts/index.tsx'
 /**
  * 配置文件路径
  */
-export const DEFAULT_CONFIG_PATH = 'emi.config.ts'
+export const DEFAULT_CONFIG_PATH = './emi.config.ts'
 
 /**
  * esbuild服务路径
  */
 export const DEFAULT_ESBUILD_SERVE_PATH = '.esbuild'
+
+/**
+ * mock路径
+ */
+export const DEFAULT_MOCK_PATH = 'mock'

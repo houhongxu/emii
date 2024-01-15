@@ -45,29 +45,40 @@ export function createDevKoaApp({
 export async function esbuildServe({
   platform,
   outfileName,
-  entry,
+  outdirName,
+  entryPoints,
   port,
   appData,
   plugins,
 }: {
   platform: BuildOptions['platform']
   /**
-   * 包括后缀
+   * 单文件时，文件名包括后缀
    */
-  outfileName: string
-  entry: string
+  outfileName?: string
+  /**
+   * 多文件时，目录
+   */
+  outdirName?: string
+  entryPoints: BuildOptions['entryPoints']
   port: number
   appData: IAppData
   plugins?: BuildOptions['plugins']
 }) {
   const ctx = await context({
+    ...(outfileName
+      ? outfileName && {
+          outfile: path.join(appData.paths.absEsbuildServePath, outfileName),
+        }
+      : outdirName && {
+          outdir: path.join(appData.paths.absEsbuildServePath, outdirName),
+        }),
     platform,
-    outfile: path.join(appData.paths.absEsbuildServePath, outfileName),
     bundle: true,
     define: {
       'process.env.NODE_ENV': JSON.stringify('development'),
     },
-    entryPoints: [entry],
+    entryPoints,
     tsconfig: path.join(appData.paths.cwd, 'tsconfig.json'),
     plugins,
   })

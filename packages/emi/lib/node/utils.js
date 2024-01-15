@@ -2900,7 +2900,8 @@ var utils_exports = {};
 __export(utils_exports, {
   EmiEmitter: () => EmiEmitter,
   EmiGlobal: () => EmiGlobal,
-  findPort: () => findPort
+  findPort: () => findPort,
+  isEmptyObject: () => isEmptyObject
 });
 module.exports = __toCommonJS(utils_exports);
 var import_events = __toESM(require("events"));
@@ -2916,9 +2917,13 @@ async function findPort(port) {
 }
 var EmiEmitter = new import_events.default();
 var EmiGlobal = global;
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   EmiEmitter,
   EmiGlobal,
-  findPort
+  findPort,
+  isEmptyObject
 });
