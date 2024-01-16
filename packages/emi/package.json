@@ -1,7 +1,7 @@
 {
-  "name": "emi",
-  "version": "0.0.1",
-  "description": "lightweight react framework based on esbuild",
+  "name": "emii",
+  "version": "0.0.2",
+  "description": "lightweight react framework based on esbuild like umi",
   "main": "./lib/node/cli.js",
   "bin": "./bin/emi.js",
   "files": [
@@ -9,8 +9,8 @@
     "./bin"
   ],
   "scripts": {
-    "build:node": "npx esbuild ./src/node/** --platform=node --external:esbuild --bundle --outdir=lib/node",
-    "build:client": "npx esbuild ./src/client/** --external:esbuild --bundle --outdir=lib/client",
+    "build:node": "npx esbuild ./src/node/** --minify --platform=node --external:esbuild --bundle --outdir=lib/node",
+    "build:client": "npx esbuild ./src/client/** --minify --external:esbuild --bundle --outdir=lib/client",
     "build": "pnpm build:node && pnpm build:client",
     "dev": "pnpm build --watch"
   },
@@ -21,13 +21,12 @@
     "commander": "^11.1.0",
     "esbuild": "^0.19.10",
     "glob": "^10.3.10",
-    "http-terminator": "^3.2.0",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.1",
     "koa-proxies": "^0.12.4",
     "koa-static": "^5.0.0",
     "portfinder": "^1.0.32",
-    "http-destroy":"workspace:*"
+    "http-destroy": "workspace:*"
   },
   "devDependencies": {
     "@types/koa": "^2.13.12",

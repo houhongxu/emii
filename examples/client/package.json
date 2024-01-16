@@ -19,7 +19,7 @@
     "@types/koa": "^2.13.12",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "emi": "workspace:*",
+    "emii": "workspace:*",
     "serve": "^14.2.1"
   }
 }

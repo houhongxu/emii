@@ -1,93 +1,19 @@
-"use strict";
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/node/generate.ts
-var generate_exports = {};
-__export(generate_exports, {
-  generateHtml: () => generateHtml,
-  generateIndex: () => generateIndex
-});
-module.exports = __toCommonJS(generate_exports);
-var import_fs = require("fs");
-var import_promises = require("fs/promises");
-
-// src/node/constants/ports.ts
-var DEFAULT_DEV_PORT = 2222;
-
-// src/node/constants/hosts.ts
-var DEFAULT_DEV_HOST = "127.0.0.1";
-
-// src/node/generate.ts
-var import_path = __toESM(require("path"));
-var count = 0;
-async function generateIndex({
-  appData,
-  routes,
-  userConfig
-}) {
-  const getRouteStr = (routes2) => {
-    let routeStr2 = "";
-    let importStr2 = "";
-    routes2.forEach((route) => {
-      count++;
-      importStr2 += `import Module${count} from '${route.element}';
-`;
-      routeStr2 += `<Route path='${route.path}' element={<Module${count}/>}>;
-`;
-      if (route.routes) {
-        const { routeStr: subRouteStr, importStr: subImportStr } = getRouteStr(
-          route.routes
-        );
-        routeStr2 += subRouteStr;
-        importStr2 += subImportStr;
-      }
-      routeStr2 += "</Route>\n";
-    });
-    return { routeStr: routeStr2, importStr: importStr2 };
-  };
-  const { routeStr, importStr } = getRouteStr(routes);
-  const content = `
+"use strict";var U=Object.create;var m=Object.defineProperty;var d=Object.getOwnPropertyDescriptor;var D=Object.getOwnPropertyNames;var L=Object.getPrototypeOf,P=Object.prototype.hasOwnProperty;var I=(t,e)=>{for(var o in e)m(t,o,{get:e[o],enumerable:!0})},E=(t,e,o,s)=>{if(e&&typeof e=="object"||typeof e=="function")for(let r of D(e))!P.call(t,r)&&r!==o&&m(t,r,{get:()=>e[r],enumerable:!(s=d(e,r))||s.enumerable});return t};var F=(t,e,o)=>(o=t!=null?U(L(t)):{},E(e||!t||!t.__esModule?m(o,"default",{value:t,enumerable:!0}):o,t)),O=t=>E(m({},"__esModule",{value:!0}),t);var $={};I($,{generateHtml:()=>S,generateIndex:()=>g});module.exports=O($);var T=require("fs"),p=require("fs/promises");var l="127.0.0.1";var _=F(require("path")),u=0;async function g({appData:t,routes:e,userConfig:o}){let s=n=>{let a="",c="";return n.forEach(i=>{if(u++,c+=`import Module${u} from '${i.element}';
+`,a+=`<Route path='${i.path}' element={<Module${u}/>}>;
+`,i.routes){let{routeStr:x,importStr:R}=s(i.routes);a+=x,c+=R}a+=`</Route>
+`}),{routeStr:a,importStr:c}},{routeStr:r,importStr:f}=s(e),A=`
   import { createRoot } from 'react-dom/client'
   import { BrowserRouter, Route, Routes } from 'react-router-dom'
   import { createElement } from 'react'
   import { KeepAliveLayout } from 'react-router-keep-alive'
-  ${importStr}
+  ${f}
 
   const App = () => {
     return (
-      <KeepAliveLayout keepalivePaths={[${// 模板字符串会吞掉数组和字符串，所以在外面套[]，在字符串值外面套''
-  userConfig.keepalive?.map(
-    (i) => typeof i === "string" ? `'${i}'` : i
-  ) || []}]}>
+      <KeepAliveLayout keepalivePaths={[${o.keepalive?.map(n=>typeof n=="string"?`'${n}'`:n)||[]}]}>
         <BrowserRouter>
           <Routes>
-            ${routeStr}
+            ${r}
           </Routes>
         </BrowserRouter>
       </KeepAliveLayout>
@@ -97,29 +23,14 @@ async function generateIndex({
   const root = createRoot(document.getElementById('root')!)
   
   root.render(createElement(App))
-  `;
-  try {
-    if (!(0, import_fs.existsSync)(appData.paths.absTempPath)) {
-      await (0, import_promises.mkdir)(appData.paths.absTempPath);
-    }
-    await (0, import_promises.writeFile)(appData.paths.absEntryPath, content, "utf-8");
-  } catch (e) {
-    console.error("\u751F\u6210index\u5931\u8D25", e);
-  }
-}
-async function generateHtml({
-  appData,
-  userConfig,
-  isProduction = false
-}) {
-  const content = `
+  `;try{(0,T.existsSync)(t.paths.absTempPath)||await(0,p.mkdir)(t.paths.absTempPath),await(0,p.writeFile)(t.paths.absEntryPath,A,"utf-8")}catch(n){console.error("\u751F\u6210index\u5931\u8D25",n)}}async function S({appData:t,userConfig:e,isProduction:o=!1}){let s=`
     <!DOCTYPE html>
     <html lang="en">
     
     <head>
         <meta charset="UTF-8">
-        <title>${userConfig.title || appData.pkg.name || "Emi"}</title>
-        <link rel="stylesheet" href="${isProduction ? "." : `http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}`}/index.css"></link>
+        <title>${e.title||t.pkg.name||"Emi"}</title>
+        <link rel="stylesheet" href="${o?".":`http://${l}:${2222}`}/index.css"></link>
     </head>
     
     <body>
@@ -127,27 +38,8 @@ async function generateHtml({
             <span>loading...</span>
         </div>
 
-        <script src="${isProduction ? "." : `http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}`}/index.js"></script>
-        ${isProduction ? "" : '<script src="/hot-reloading.js"></script>'}
+        <script src="${o?".":`http://${l}:${2222}`}/index.js"></script>
+        ${o?"":'<script src="/hot-reloading.js"></script>'}
     </body>
     </html>
-    `;
-  try {
-    if (!(0, import_fs.existsSync)(appData.paths.absTempPath)) {
-      await (0, import_promises.mkdir)(appData.paths.absTempPath);
-    }
-    await (0, import_promises.writeFile)(
-      isProduction ? import_path.default.join(appData.paths.absOutputPath, "index.html") : appData.paths.absHtmlPath,
-      content,
-      "utf-8"
-    );
-  } catch (e) {
-    console.error("\u751F\u6210html\u5931\u8D25", e);
-  }
-  return content;
-}
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  generateHtml,
-  generateIndex
-});
+    `;try{(0,T.existsSync)(t.paths.absTempPath)||await(0,p.mkdir)(t.paths.absTempPath),await(0,p.writeFile)(o?_.default.join(t.paths.absOutputPath,"index.html"):t.paths.absHtmlPath,s,"utf-8")}catch(r){console.error("\u751F\u6210html\u5931\u8D25",r)}return s}0&&(module.exports={generateHtml,generateIndex});
