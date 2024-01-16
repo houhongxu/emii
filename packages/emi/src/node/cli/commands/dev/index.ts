@@ -12,7 +12,7 @@ import { EmiEmitter, EmiGlobal, findPort, isEmptyObject } from '../../../utils'
 import { createDevKoaApp, esbuildServe, logListenInfo } from './server'
 import { getUserConfig } from '../../../config'
 import { getRoutes } from '../../../routes'
-import { generateHtml, generateIndex } from './generate'
+import { generateHtml, generateIndex } from '../../../generate'
 import { IAppData } from '../../../types'
 import http from 'http'
 import proxy from 'koa-proxies'
@@ -24,7 +24,7 @@ import createDestrou from 'http-destroy'
 export const dev = new Command('dev')
 
 dev
-  .option('-p,--port <value>', 'log it', DEFAULT_DEV_PORT.toString())
+  .option('-p,--port <value>', 'dev server port', DEFAULT_DEV_PORT.toString())
   .action(async (options) => {
     const port = options.port as string
     const cwd = process.cwd()

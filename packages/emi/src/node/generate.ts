@@ -1,7 +1,8 @@
 import { existsSync } from 'fs'
-import { IAppData, IRoute, IUserConfig } from '../../../types'
+import { IAppData, IRoute, IUserConfig } from './types'
 import { mkdir, writeFile } from 'fs/promises'
-import { DEFAULT_DEV_HOST, DEFAULT_DEV_PORT } from '../../../constants'
+import { DEFAULT_DEV_HOST, DEFAULT_DEV_PORT } from './constants'
+import path from 'path'
 
 let count = 0
 
@@ -93,9 +94,11 @@ export async function generateIndex({
 export async function generateHtml({
   appData,
   userConfig,
+  isProduction = false,
 }: {
   appData: IAppData
   userConfig: IUserConfig
+  isProduction?: boolean
 }) {
   // 客户端的css在ts中引入后会被esbuild打包为index.css，ts会被esbuild打包为index.js，伪热更新hot-reloading.js文件打包在lib/client/hot-reloading.js
   const content = `
@@ -105,7 +108,9 @@ export async function generateHtml({
     <head>
         <meta charset="UTF-8">
         <title>${userConfig.title || appData.pkg.name || 'Emi'}</title>
-        <link rel="stylesheet" href="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.css"></link>
+        <link rel="stylesheet" href="${
+          isProduction ? '.' : `http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}`
+        }/index.css"></link>
     </head>
     
     <body>
@@ -113,8 +118,10 @@ export async function generateHtml({
             <span>loading...</span>
         </div>
 
-        <script src="http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}/index.js"></script>
-        <script src="/hot-reloading.js"></script>
+        <script src="${
+          isProduction ? '.' : `http://${DEFAULT_DEV_HOST}:${DEFAULT_DEV_PORT}`
+        }/index.js"></script>
+        ${isProduction ? '' : '<script src="/hot-reloading.js"></script>'}
     </body>
     </html>
     `
@@ -124,7 +131,13 @@ export async function generateHtml({
       await mkdir(appData.paths.absTempPath)
     }
 
-    await writeFile(appData.paths.absHtmlPath, content, 'utf-8')
+    await writeFile(
+      isProduction
+        ? path.join(appData.paths.absOutputPath, 'index.html')
+        : appData.paths.absHtmlPath,
+      content,
+      'utf-8',
+    )
   } catch (e) {
     console.error('生成html失败', e)
   }

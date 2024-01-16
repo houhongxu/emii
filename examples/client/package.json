@@ -3,6 +3,7 @@
   "description": "",
   "scripts": {
     "dev": "emi dev",
+    "build": "emi build",
     "serve": "npx serve -p 1111 ./dist"
   },
   "keywords": [],
