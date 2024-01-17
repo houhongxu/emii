@@ -1,4 +1,4 @@
-import { Command } from 'commander'
+import { Command } from '../../../../../compiled/commander'
 import {
   CONFIG_REBUILD_EVENT,
   DEFAULT_DEV_PORT,
@@ -15,11 +15,11 @@ import { getRoutes } from '../../../routes'
 import { generateHtml, generateIndex } from '../../../generate'
 import { IAppData } from '../../../types'
 import http from 'http'
-import proxy from 'koa-proxies'
+import proxy from '../../../../../compiled/koa-proxies'
 import { esbuildRebuildPlugin } from '../../../plugins'
 import { getMockConfig, getMockPaths } from '../../../mock'
-import bodyParser from 'koa-bodyparser'
-import createDestrou from 'http-destroy'
+import bodyParser from '../../../../../compiled/koa-bodyparser'
+import createDestrou from '../../../../../compiled/http-destroy'
 
 export const dev = new Command('dev')
 

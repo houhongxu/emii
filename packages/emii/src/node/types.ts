@@ -1,5 +1,5 @@
-import { Context } from 'koa'
-import { IKoaProxiesOptions } from 'koa-proxies'
+import { Context } from '../../compiled/koa'
+import { IKoaProxiesOptions } from '../../compiled/koa-proxies'
 
 export type INoop = () => void
 

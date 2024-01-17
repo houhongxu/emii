@@ -1,8 +1,7 @@
-import { glob } from 'glob'
+import { glob } from '../../compiled/glob'
 import { IAppData, IMockType } from './types'
 import path from 'path'
 import { DEFAULT_MOCK_PATH } from './constants'
-import { Context } from 'koa'
 
 export function getMockPaths({ appData }: { appData: IAppData }) {
   const mockDir = appData.paths.absMockPath

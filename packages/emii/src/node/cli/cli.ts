@@ -1,4 +1,4 @@
-import { program } from 'commander'
+import { program } from '../../../compiled/commander'
 import { dev } from './commands'
 import { build } from './commands'
 

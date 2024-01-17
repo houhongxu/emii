@@ -1,4 +1,4 @@
-import StaticMiddleware from 'koa-static'
+import StaticMiddleware from '../../../compiled/koa-static'
 import path from 'path'
 import { IAppData } from '../types'
 

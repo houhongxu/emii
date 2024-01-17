@@ -1,6 +1,6 @@
 import path from 'path'
 import { IAppData, IRoute } from './types'
-import { existsSync, statSync } from 'fs'
+import { existsSync } from 'fs'
 import { readdir, stat } from 'fs/promises'
 
 /**

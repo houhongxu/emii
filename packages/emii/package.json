@@ -21,17 +21,16 @@
     "commander": "^11.1.0",
     "esbuild": "^0.19.10",
     "glob": "^10.3.10",
-    "koa": "^2.14.2",
+    "http-destroy": "workspace:*",
+    "koa": "^2.15.0",
     "koa-bodyparser": "^4.4.1",
     "koa-proxies": "^0.12.4",
     "koa-static": "^5.0.0",
-    "portfinder": "^1.0.32",
-    "http-destroy": "workspace:*"
+    "portfinder": "^1.0.32"
   },
   "devDependencies": {
-    "@types/koa": "^2.13.12",
+    "@types/koa": "^2.14.0",
     "@types/koa-bodyparser": "^4.3.12",
-    "@types/koa-static": "~4.0.4",
-    "@types/node": "^20.10.5"
+    "@types/koa-static": "~4.0.4"
   }
 }

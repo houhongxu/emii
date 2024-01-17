@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-import portfinder from 'portfinder'
+import portfinder from '../../compiled/portfinder'
 import http from 'http'
 
 /**

@@ -1,4 +1,4 @@
-import Koa from 'koa'
+import Koa from '../../../compiled/koa'
 import http from 'http'
 import { DEFAULT_DEV_HOST } from '../constants'
 
