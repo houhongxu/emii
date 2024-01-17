@@ -4,7 +4,7 @@ import './hello.css'
 import { KeepAliveContext } from 'react-router-keep-alive'
 
 const Hello = () => {
-  const [text, setText] = useState('Hello Emi!')
+  const [text, setText] = useState('Hello Emii!')
   const { dropByPath } = useContext(KeepAliveContext)
 
   return (

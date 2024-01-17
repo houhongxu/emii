@@ -39,25 +39,6 @@ dev
     const appData = await getAppData({ cwd })
 
     try {
-      // 开启esbuild的入口服务给koa
-      await esbuildServe({
-        platform: 'browser',
-        outfileName: 'index.js',
-        entryPoints: [appData.paths.absEntryPath],
-        port: esbuildIndexPort,
-        appData,
-      })
-
-      // 开启esbuild的配置文件服务给koa
-      await esbuildServe({
-        platform: 'node',
-        outfileName: 'config.js',
-        entryPoints: [appData.paths.absConfigPath],
-        port: esbuildConfigPort,
-        appData,
-        plugins: [esbuildRebuildPlugin],
-      })
-
       const mockPath = getMockPaths({ appData })
 
       // 开启esbuild的mock文件服务给koa
@@ -66,6 +47,16 @@ dev
         outdirName: DEFAULT_MOCK_PATH,
         entryPoints: mockPath,
         port: esbuildMockPort,
+        appData,
+        plugins: [esbuildRebuildPlugin],
+      })
+
+      // 开启esbuild的配置文件服务给koa
+      await esbuildServe({
+        platform: 'node',
+        outfileName: 'config.js',
+        entryPoints: [appData.paths.absConfigPath],
+        port: esbuildConfigPort,
         appData,
         plugins: [esbuildRebuildPlugin],
       })
@@ -96,6 +87,15 @@ dev
         EmiGlobal.EmiDevServer = nextServer
 
         console.log('<=== 重启成功 ===>')
+      })
+
+      // 开启esbuild的入口服务给koa
+      await esbuildServe({
+        platform: 'browser',
+        outfileName: 'index.js',
+        entryPoints: [appData.paths.absEntryPath],
+        port: esbuildIndexPort,
+        appData,
       })
     } catch (e) {
       console.log('服务开启失败', e)

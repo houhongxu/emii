@@ -8,12 +8,12 @@ export const DEFAULT_OUTPUT_PATH = 'dist'
 /**
  * 打包入口
  */
-export const DEFAULT_ENTRY_PATH = './emi.tsx'
+export const DEFAULT_ENTRY_PATH = './emii.tsx'
 
 /**
  * 临时路径
  */
-export const DEFAULT_TEMPORARY_PATH = '.emi'
+export const DEFAULT_TEMPORARY_PATH = '.emii'
 
 /**
  * 主布局路径
@@ -23,7 +23,7 @@ export const DEFAULT_LAYOUT_PATH = './src/layouts/index.tsx'
 /**
  * 配置文件路径
  */
-export const DEFAULT_CONFIG_PATH = './emi.config.ts'
+export const DEFAULT_CONFIG_PATH = './emii.config.ts'
 
 /**
  * esbuild服务路径

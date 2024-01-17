@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "lightweight react framework based on esbuild like umi",
   "main": "./lib/node/cli.js",
-  "bin": "./bin/emi.js",
+  "bin": "./bin/emii.js",
   "files": [
     "./lib",
     "./bin"

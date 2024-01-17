@@ -2,8 +2,8 @@
   "name": "client",
   "description": "",
   "scripts": {
-    "dev": "emi dev",
-    "build": "emi build",
+    "dev": "emii dev",
+    "build": "emii build",
     "serve": "npx serve -p 1111 ./dist"
   },
   "keywords": [],

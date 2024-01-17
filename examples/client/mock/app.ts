@@ -2,7 +2,7 @@ import { Context } from 'koa'
 
 export default {
   'GET /mock/hello': {
-    text: 'hello emi23',
+    text: 'hello emii',
   },
   'POST /mock/list': (ctx: Context) => {
     const dbData = [
