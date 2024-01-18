@@ -1,6 +1,6 @@
 {
   "name": "emii",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "lightweight react framework based on esbuild like umi",
   "main": "./lib/node/cli.js",
   "bin": "./bin/emii.js",
@@ -9,8 +9,8 @@
     "./bin"
   ],
   "scripts": {
-    "build:node": "npx esbuild ./src/node/** --minify --platform=node --external:esbuild --bundle --outdir=lib/node",
-    "build:client": "npx esbuild ./src/client/** --minify --external:esbuild --bundle --outdir=lib/client",
+    "build:node": "npx esbuild ./src/node/** --minify --platform=node --external:./compiled/esbuild --external:esbuild --bundle --outdir=./lib/node",
+    "build:client": "npx esbuild ./src/client/** --minify --external:./compiled/esbuild --external:esbuild --bundle --outdir=./lib/client",
     "build": "pnpm build:node && pnpm build:client",
     "dev": "pnpm build --watch"
   },

@@ -18,6 +18,9 @@ importers:
       '@types/node':
         specifier: ^20.10.5
         version: 20.10.5
+      '@vercel/ncc':
+        specifier: ^0.38.1
+        version: 0.38.1
       commander:
         specifier: ^11.1.0
         version: 11.1.0
@@ -513,6 +516,11 @@ packages:
       '@types/http-errors': 2.0.4
       '@types/mime': 3.0.4
       '@types/node': 20.10.5
+    dev: true
+
+  /@vercel/ncc@0.38.1:
+    resolution: {integrity: sha512-IBBb+iI2NLu4VQn3Vwldyi2QwaXt5+hTyh58ggAMoCGE6DJmPvwL3KPBWcJl1m9LYPChBLE980Jw+CS4Wokqxw==}
+    hasBin: true
     dev: true
 
   /@zeit/schemas@2.29.0:

@@ -36,7 +36,6 @@
     "typings/esm.d.mts",
     "package-support.json"
   ],
-  "type": "commonjs",
   "main": "./index.js",
   "exports": {
     ".": {
