@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "examples",
   "description": "",
   "scripts": {
     "dev": "emii dev",
