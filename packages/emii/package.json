@@ -1,6 +1,6 @@
 {
   "name": "emii",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "lightweight react framework based on esbuild like umi",
   "main": "./lib/node/cli.js",
   "bin": "./bin/emii.js",
