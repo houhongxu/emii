@@ -4,7 +4,6 @@ import { copy, readdir } from 'fs-extra'
 import ncc from '@vercel/ncc'
 import { writeFile } from 'fs-extra'
 import { ensureDir } from 'fs-extra'
-import { readFile } from 'fs-extra'
 
 const COMPILE_PATH = 'compiled'
 
@@ -26,7 +25,7 @@ cli
     const moduleNames = await readdir(absNodeModulesPath)
     const typesNames = await readdir(absTypesPath)
 
-    const excludes = ['.bin', '@types']
+    const excludes = ['.bin', '@types', 'esbuild']
 
     for (const moduleName of moduleNames) {
       if (excludes.includes(moduleName)) continue

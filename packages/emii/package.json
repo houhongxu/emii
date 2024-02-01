@@ -9,8 +9,8 @@
     "./bin"
   ],
   "scripts": {
-    "build:node": "npx esbuild ./src/node/** --minify --platform=node --external:./compiled/esbuild --external:esbuild --bundle --outdir=./lib/node",
-    "build:client": "npx esbuild ./src/client/** --minify --external:./compiled/esbuild --external:esbuild --bundle --outdir=./lib/client",
+    "build:node": "esbuild ./src/node/** --minify --platform=node --external:esbuild --bundle --outdir=./lib/node",
+    "build:client": "esbuild ./src/client/** --minify --external:esbuild --bundle --outdir=./lib/client",
     "build": "pnpm build:node && pnpm build:client",
     "dev": "pnpm build --watch"
   },
