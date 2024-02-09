@@ -1,4 +1,4 @@
-import { Plugin } from '../../../compiled/esbuild'
+import { Plugin } from 'esbuild'
 import { EmiEmitter } from '../utils'
 import { CONFIG_REBUILD_EVENT } from '../constants'
 
